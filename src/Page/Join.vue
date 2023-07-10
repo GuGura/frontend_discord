@@ -58,7 +58,7 @@
 
 <script setup>
 import {reactive, defineProps} from "vue";
-import router from "@/script/router/router";
+import router from "@/script/routes/router";
 import SubmitBtn from "@/components/SubmitBtn.vue";
 import TextBox from "@/components/TextBox.vue";
 import BaseURL from "@/script/axios/BaseURL";

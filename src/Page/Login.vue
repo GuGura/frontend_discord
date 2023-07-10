@@ -47,7 +47,7 @@
 import {reactive} from "vue";
 import SubmitBtn from "@/components/SubmitBtn.vue";
 import TextBox from "@/components/TextBox.vue";
-import router from "@/script/router/router";
+import router from "@/script/routes/router";
 import BaseURL from "@/script/axios/BaseURL";
 
 const result = reactive({
@@ -64,21 +64,18 @@ function forgotPassword() {
 }
 
 function login() {
-  console.log("1")
   BaseURL.post("/login", JSON.stringify(result))
       .then((res) => {
-        if (res.data.status) {
-          const accessJwt = res.headers.get('accessJwt');
-          const refreshJwt = res.headers.get('refreshJwt')
-          const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
-          localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
-          router.push("/").then(() => console.log("로그인 성공"))
-        } else {
-          alert(res.data.message)
-        }
-      }).catch((err)=>{
-        console.log(err)
-  })
+        const accessJwt = res.headers.get('accessJwt');
+        const refreshJwt = res.headers.get('refreshJwt')
+        const token = {accessJwt: accessJwt, refreshJwt: refreshJwt}
+        localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
+        router.push("/").then(() => console.log("로그인 성공"))
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-undef
+        Swal.fire('Fail!', err.response.data.message, 'error')
+      })
 }
 </script>
 
