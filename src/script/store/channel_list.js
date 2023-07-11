@@ -36,14 +36,16 @@ export const useChannelListStore = defineStore("channelListStore", () => {
     })
 
     async function initBtn() {
+        console.log("initBtn")
         await RestApi.get("/myInfo/channelList")
             .then(({data}) => {
+                console.log(data)
                 const resultArray = data.data;
                 resultArray.forEach(btn => {buttons.push(btn)})
             })
     }
 
-
+//---------------------------------------------------------------
     async function leaveChannel(){
         let channelUID = router.currentRoute.value.path.split('/')[2]
         RestApi.delete(`/channel/leaveChannel/${channelUID}`)
