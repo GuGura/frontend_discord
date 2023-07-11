@@ -43,6 +43,6 @@ onMounted(() => {
   height: 100%;
   background: black;
   filter: opacity(0.5);
-  z-index: 1;
+  z-index: 13;
 }
 </style>

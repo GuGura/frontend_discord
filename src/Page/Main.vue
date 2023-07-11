@@ -1,12 +1,15 @@
 <script setup>
-
 import ChannelList from "@/components/channel_list/ChannelList.vue";
+import Loading from "@/components/Loading.vue";
+import {useModalStore} from "@/script/store/modal";
+
+const modalStore = useModalStore();
 </script>
 
 <template>
   <div id="container">
     <ChannelList/>
-    hello
+    <Loading v-if="modalStore.modal.loading"/>
   </div>
 </template>
 

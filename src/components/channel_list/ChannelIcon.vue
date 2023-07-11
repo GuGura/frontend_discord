@@ -20,7 +20,6 @@ function btnClick() {
   if (!(endPoint === 'lobby') && !(endPoint === 'addServer') && !(endPoint === 'public'))
     endPoint = props.buttonData.channel_UID
   if (endPoint !== 'addServer') {
-
     router.push(`/channel/${endPoint}`)
   }
 }

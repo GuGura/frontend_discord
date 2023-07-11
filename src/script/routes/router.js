@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import initJwt from "@/script/axios/jwt/initJwt";
+import {useChannelListStore} from "@/script/store/channel_list";
 
 const routes = [
     {
@@ -12,15 +13,6 @@ const routes = [
         path: '/join',
         name: 'join',
         component: () => import(/*webpackChunkName: "join", webpackPrefetch: true */ "@/Page/Join.vue")
-    },
-    {
-        path: '/channel/',
-        name: 'baseURL',
-        redirect: '/channel/lobby'
-    },{
-        path: '/',
-        name: 'baseURL',
-        redirect: '/channel/lobby'
     },
     {
         path: '/channel/:type',
@@ -40,7 +32,7 @@ const router = createRouter({
     routes, // short for `routes: routes`
 })
 
-router.beforeEach(async (to,form,next)=>{
+router.beforeEach(async (to, form, next) => {
     const JwtExist = await initJwt.checkAccessJwt();
     if (to.meta.isJwtExist && !JwtExist) next(`/login`);
     else if (!to.meta.isJwtExist && JwtExist) next(`/channel/lobby`);

@@ -5,7 +5,6 @@ import {onMounted} from "vue";
 import {useChannelListStore} from "@/script/store/channel_list";
 import AddChannelModel from "@/components/modal/AddChannelModel.vue";
 import {useModalStore} from "@/script/store/modal";
-import Loading from "@/components/Loading.vue";
 
 const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
@@ -13,6 +12,7 @@ const channelListStore = useChannelListStore();
 onMounted(() => {
   channelListStore.initBtn()
 })
+
 </script>
 
 <template>
@@ -24,7 +24,6 @@ onMounted(() => {
     </div>
     <AddChannelModel
         v-if="modalStore.modal.addServer === true"/>
-    <Loading v-if="modalStore.modal.loading"/>
   </div>
 </template>
 
