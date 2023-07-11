@@ -3,14 +3,14 @@ import ChannelIcon from "@/components/channel_list/ChannelIcon.vue";
 
 import {onMounted} from "vue";
 import {useChannelListStore} from "@/script/store/channel_list";
-// import AddServerModel from "@/components/modal/AddChannelModel.vue";
-// import {useModalStore} from "@/script/store/modal";
+import AddChannelModel from "@/components/modal/AddChannelModel.vue";
+import {useModalStore} from "@/script/store/modal";
 
-// const modalStore = useModalStore();
+const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
 
 onMounted(() => {
-  // channelListStore.initBtn()
+  channelListStore.initBtn()
 })
 </script>
 
@@ -21,8 +21,8 @@ onMounted(() => {
         <ChannelIcon v-for="button in channelListStore.buttons" :key="button" :buttonData="button"/>
       </form>
     </div>
-<!--    <AddServerModel-->
-<!--        v-if="modalStore.modal.addServer === true"/>-->
+    <AddChannelModel
+        v-if="modalStore.modal.addServer === true"/>
   </div>
 </template>
 

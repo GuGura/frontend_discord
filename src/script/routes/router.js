@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
-//import initJwt from "@/script/axios/jwt/initJwt";
+import initJwt from "@/script/axios/jwt/initJwt";
 
 const routes = [
     {
@@ -13,15 +13,15 @@ const routes = [
         name: 'join',
         component: () => import(/*webpackChunkName: "join", webpackPrefetch: true */ "@/Page/Join.vue")
     },
-    // {
-    //     path: '/channel/',
-    //     name: 'baseURL',
-    //     redirect: '/channel/lobby'
-    // },{
-    //     path: '/',
-    //     name: 'baseURL',
-    //     redirect: '/channel/lobby'
-    // },
+    {
+        path: '/channel/',
+        name: 'baseURL',
+        redirect: '/channel/lobby'
+    },{
+        path: '/',
+        name: 'baseURL',
+        redirect: '/channel/lobby'
+    },
     {
         path: '/channel/:type',
         name: 'main',
@@ -40,15 +40,12 @@ const router = createRouter({
     routes, // short for `routes: routes`
 })
 
-// router.beforeEach(async (to,form,next)=>{
-//     const JwtExist = await initJwt.checkAccessJwt();
-//     console.log(JwtExist)
-//     console.log(to)
-//     console.log(form)
-//     if (to.meta.isJwtExist && !JwtExist) next(`/login`);
-//     else if (!to.meta.isJwtExist && JwtExist) next(`/channel/lobby`);
-//     else if (form.meta.isJwtExist && !JwtExist) next(`/login`);
-//     else next();
-// })
+router.beforeEach(async (to,form,next)=>{
+    const JwtExist = await initJwt.checkAccessJwt();
+    if (to.meta.isJwtExist && !JwtExist) next(`/login`);
+    else if (!to.meta.isJwtExist && JwtExist) next(`/channel/lobby`);
+    else if (form.meta.isJwtExist && !JwtExist) next(`/login`);
+    else next();
+})
 
 export default router;

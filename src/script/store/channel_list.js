@@ -8,9 +8,9 @@ export const useChannelListStore = defineStore("channelListStore", () => {
     const buttons = reactive([
         {
             channel_UID: 0,
-            member_UID: 3,
+            user_UID: 3,
             channel_title: "lobby",
-            channel_icon_url: "/img/channel_list/discord_Icon.png",
+            channel_icon_url: "/img/channelList/discord_Icon.png",
             channel_type: 'lobby'
         },
     ])
@@ -38,12 +38,12 @@ export const useChannelListStore = defineStore("channelListStore", () => {
     async function initBtn() {
         await RestApi.get("/myInfo/channelList")
             .then(({data}) => {
-                const resultArray = data.result;
-                resultArray.forEach(btn => {
-                    buttons.push(btn)
-                })
+                const resultArray = data.data;
+                resultArray.forEach(btn => {buttons.push(btn)})
             })
     }
+
+
     async function leaveChannel(){
         let channelUID = router.currentRoute.value.path.split('/')[2]
         RestApi.delete(`/channel/leaveChannel/${channelUID}`)
