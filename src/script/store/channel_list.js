@@ -39,7 +39,6 @@ export const useChannelListStore = defineStore("channelListStore", () => {
         console.log("initBtn")
         await RestApi.get("/myInfo/channelList")
             .then(({data}) => {
-                console.log(data)
                 const resultArray = data.data;
                 resultArray.forEach(btn => {buttons.push(btn)})
             })

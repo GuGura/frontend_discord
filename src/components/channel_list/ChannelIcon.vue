@@ -12,7 +12,6 @@ const router = useRouter();
 const props = defineProps({
   buttonData: Object,
 })
-
 function btnClick() {
   if (props.buttonData.channel_title === 'addServer') {
     modalStore.open('addServer');
@@ -21,9 +20,7 @@ function btnClick() {
   if (!(endPoint === 'lobby') && !(endPoint === 'addServer') && !(endPoint === 'public'))
     endPoint = props.buttonData.channel_UID
   if (endPoint !== 'addServer') {
-    // serverListStore.btnResult.endPoint = endPoint;
-    localStorage.setItem('selectChannel',props.buttonData.channel_title)
-    localStorage.setItem('inviteCode',props.buttonData.channel_invite_code)
+
     router.push(`/channel/${endPoint}`)
   }
 }
@@ -52,7 +49,26 @@ function btnClick() {
 </template>
 
 <style scoped>
-
+.channelImage {
+  background-position: center;
+  background-size: contain;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  box-sizing: inherit;
+  padding: 12px;
+  cursor: pointer;
+}
+#Icon {
+   width: 50px;
+   height: 50px;
+ }
+.IconURL {
+  border-radius: 50%;
+  background-position: center;
+  background-size: contain;
+}
 .server_Icon {
   width: 50px;
   height: 50px;
@@ -86,11 +102,6 @@ function btnClick() {
   border-radius: 30%;
 }
 
-.channelImage {
-  background-position: center;
-  background-size: contain;
-}
-
 .title {
   color: #fff;
   cursor: pointer;
@@ -103,11 +114,5 @@ function btnClick() {
   font-size: 12px;
 }
 
-.img {
-  width: 100%;
-  height: 100%;
-  box-sizing: inherit;
-  padding: 12px;
-  cursor: pointer;
-}
+
 </style>

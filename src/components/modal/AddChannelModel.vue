@@ -28,12 +28,12 @@ let channelCode = reactive({
 
 async function createServer() {
   if (createChannel.channelName !== '') {
+    modalStore.terminate('addServer')
+    modalStore.open('loading')
     await RestApi.post("/channel/create", createChannel)
         .then(({data}) => {
-          console.log("createServer: ")
-          console.log(data)
+          modalStore.terminate('loading')
           const result = data.data.channel_UID
-          modalStore.terminate('addServer')
           channelListStore.updateBtn(data.data)
           localStorage.setItem('selectChannel', data.data.channel_title)
           localStorage.setItem('newChannelUID', data.data.channel_UID)
@@ -41,8 +41,9 @@ async function createServer() {
           router.push(`/channel/${result}`)
           router.go(1);
         })
-        .catch(() => {
-          console.log("createServer2")
+        .catch(err => {
+          modalStore.terminate('loading')
+          console.log(err)
         })
   }
 }
@@ -56,15 +57,13 @@ async function attendChannel() {
   console.log("channelCode.channelCode: " + channelCode.channelCode)
   await RestApi.get(`/channel/attend/${channelCode.channelCode}`)
       .then(({data}) => {
-        console.log(data)
-        channelListStore.updateBtn(data)
+        channelListStore.updateBtn(data.data)
         exitModal();
-        localStorage.setItem('selectChannel', data.channel_title)
-        localStorage.setItem('inviteCode', data.channel_invite_code)
-        router.push(`/channel/${data.channel_UID}`)
-        router.go(1);
+        localStorage.setItem('selectChannel', data.data.channel_title)
+        router.push(`/channel/${data.data.channel_UID}`)
       }).catch((err) => {
-        channelCode.result = (err.response.status === 404) ? '- ' + err.response.data : '에러발생'
+        console.log(err.response.data.message)
+        channelCode.result = "-" + err.response.data.message;
       })
 }
 
@@ -101,6 +100,7 @@ function redirectPublic() {
 </script>
 
 <template>
+
   <div id="container">
     <div id="background" @click="exitModal"></div>
     <div id="modal" v-if="modalStore.modal.attendChannel === false">
@@ -184,8 +184,6 @@ function redirectPublic() {
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 

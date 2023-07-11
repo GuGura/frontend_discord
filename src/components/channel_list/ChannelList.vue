@@ -5,6 +5,7 @@ import {onMounted} from "vue";
 import {useChannelListStore} from "@/script/store/channel_list";
 import AddChannelModel from "@/components/modal/AddChannelModel.vue";
 import {useModalStore} from "@/script/store/modal";
+import Loading from "@/components/Loading.vue";
 
 const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
@@ -23,6 +24,7 @@ onMounted(() => {
     </div>
     <AddChannelModel
         v-if="modalStore.modal.addServer === true"/>
+    <Loading v-if="modalStore.modal.loading"/>
   </div>
 </template>
 
@@ -40,10 +42,10 @@ onMounted(() => {
   height: 100%;
   background: #1E1F22;
   z-index: 12;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
 
 img {
@@ -64,7 +66,8 @@ form[name=serverList] {
   padding: 12px;
   cursor: pointer;
 }
-.box1{
+
+.box1 {
   padding: 10px 12px;
   width: 100%;
   height: 100%;
@@ -73,6 +76,7 @@ form[name=serverList] {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
 .box1::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
