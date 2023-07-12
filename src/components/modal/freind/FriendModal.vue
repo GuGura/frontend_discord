@@ -12,7 +12,7 @@ const modalStore = useModalStore();
 let buttonType = ref(1)
 let OtherUser = reactive([]);
 let RequestUser = reactive([]);
-let username = reactive(null);
+let nickname = reactive(null);
 let afterSearch = reactive(null);
 
 function closeM() {
@@ -39,20 +39,18 @@ function initRequestUser() {
 }
 
 function findOtherUser() {
-  if (afterSearch !== username) {
+  if (afterSearch !== nickname) {
     OtherUser.splice(0, OtherUser.length)
-    afterSearch = username;
-    if (username !== null && username !== '') {
-      RestApi.get(`/friend/search/${username}`)
+    afterSearch = nickname;
+    if (nickname !== null && nickname !== '') {
+      RestApi.post(`/friend/search/${nickname}`)
           .then(({data}) => {
-            data.forEach(user => {
-              if (user.user_ICON_URL !== null && user.user_ICON_URL !== '') {
-                user.user_ICON_URL = "data:image/png;base64," + user.user_ICON_URL
-              } else {
-                user.user_ICON_URL = "data:image/png;base64,null"
-              }
-              OtherUser.push(user)
+            console.log(data.data)
+            data.data.forEach(user => {
+              const userFrom = {user_id:user.user_id,nickname:user.nickname,icon_url:user.icon_url}
+              OtherUser.push(userFrom)
             })
+            console.log(OtherUser)
           })
     }
   }
@@ -77,8 +75,8 @@ initRequestUser();
         <div :class="(buttonType===2)? 'active':'normal' " @click="buttonType=2">친구요청</div>
       </div>
       <div id="findUser" v-if="buttonType===1">
-        <div id="searchBox">
-          <input name="searchbox" placeholder="친구 찾기" v-model="username">
+        <div id="searchBox" >
+          <input name="searchbox" placeholder="친구 찾기" v-model="nickname">
           <div id="check" @click="findOtherUser">확인</div>
         </div>
         <OtherUsers v-for="user in OtherUser" :key="user"
@@ -129,6 +127,7 @@ initRequestUser();
   display: flex;
   margin-top: -10px;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 #searchBox > input[name=searchbox] {

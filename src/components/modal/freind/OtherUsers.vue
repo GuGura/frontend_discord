@@ -9,15 +9,15 @@ const props = defineProps({
 let isRequest = reactive([props.request])
 
 function friendSend() {
-console.log(props.friendInfo.id)
-  RestApi.post(`/friend/send/${props.friendInfo.id}`)
-      .then(({data}) => {
-        console.log(data)
+console.log(props.friendInfo.user_id)
+  RestApi.post(`/friend/send/${props.friendInfo.user_id}`)
+      .then(() => {
         isRequest[0] = true
       })
       .catch(err=>{
         console.log(err)
-        alert(err.response.data)
+        // eslint-disable-next-line no-undef
+        Swal.fire(err.response.data)
       })
 }
 </script>
@@ -25,12 +25,12 @@ console.log(props.friendInfo.id)
 <template>
   <div class="btnList" >
     <div style="width: 35px;">
-        <img class="rounded" v-if="props.friendInfo.user_ICON_URL === 'data:image/png;base64,null'" src="/img/channelList/bright_icon.png">
-        <img class="rounded" :src="props.friendInfo.user_ICON_URL">
+        <img class="rounded" v-if="props.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
+        <img class="rounded" :src="props.friendInfo.icon_url" v-else>
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
-        {{ props.friendInfo.username }}
+        {{ props.friendInfo.nickname }}
       </div>
       <button style="outline: none;border: none;cursor: pointer;" @click="friendSend()" v-if="isRequest[0]===false">친구요청</button>
       <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">요청완료</button>

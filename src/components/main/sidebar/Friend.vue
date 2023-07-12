@@ -29,9 +29,6 @@ function openFriend() {
       <div class="MyMember_Name">
         {{props.friendInfo.nickname}}
       </div>
-      <div class="MyMember_exit">
-        <img src="/img/sidebar/exit.png">
-      </div>
     </div>
   </div>
 </template>
