@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import initJwt from "@/script/axios/jwt/initJwt";
-import {useChannelListStore} from "@/script/store/channel_list";
+
 
 const routes = [
     {

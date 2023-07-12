@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, reactive} from "vue";
+import {reactive} from "vue";
 import RestApi from "@/script/axios/jwt/RestApi";
 
 
@@ -17,23 +17,17 @@ export const useFriendStore = defineStore("friendStore", () => {
         user_description: ''
     })
     let friendList = reactive([])
+    const RequestUser = reactive([]);
     let searchUsers = reactive([])
-    let getSearchUsers = ()=>(computed(()=>{
-        return searchUsers
-    }))
-    let getFriendList = ()=>(computed(()=>{
-        return friendList
-    }))
+    function pushRequestUser(index){
+        RequestUser.push(index);
+    }
     function initFriendList(){
         RestApi.get('/myInfo/friendList')
             .then(({data})=>{
-                data.data.forEach(member =>{
-                    friendList.push(member)
-                })
+                data.data.forEach(member =>{friendList.push(member)})
             })
-            .catch(err=>{
-                console.log(err)
-            })
+            .catch(err=>{console.log(err)})
     }
     function updateFriendInfo() {
         localStorage.removeItem('friend')
@@ -75,10 +69,10 @@ export const useFriendStore = defineStore("friendStore", () => {
     return {
         user,
         friendList,
+        RequestUser,
         searchUsers,
-        getSearchUsers,
-        getFriendList,
         initFriendList,
+        pushRequestUser,
         updateFriendInfo,
         init
     }

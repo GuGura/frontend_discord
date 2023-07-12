@@ -1,21 +1,24 @@
 <script setup>
 import {defineProps, reactive} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
+import {useFriendStore} from "@/script/store/friend";
 
 const props = defineProps({
   friendInfo: Object,
   request: Boolean,
 })
+const friendStore = useFriendStore();
 let isRequest = reactive([props.request])
 
 function friendResponse() {
-console.log(props.friendInfo.id)
-  RestApi.put(`/friend/response/${props.friendInfo.id}`)
+  console.log(props.friendInfo.id)
+  RestApi.put(`/friend/response/${props.friendInfo.user_id}`)
       .then(({data}) => {
         console.log(data)
         isRequest[0] = true
+        friendStore.friendList.push(data.data);
       })
-      .catch(err=>{
+      .catch(err => {
         console.log(err)
         alert(err.response.data)
       })
@@ -23,16 +26,18 @@ console.log(props.friendInfo.id)
 </script>
 
 <template>
-  <div class="btnList" >
+  <div class="btnList">
     <div style="width: 35px;">
-        <img class="rounded" v-if="props.friendInfo.user_ICON_URL === 'data:image/png;base64,null'" src="/img/channelList/bright_icon.png">
-        <img class="rounded" :src="props.friendInfo.user_ICON_URL">
+      <img class="rounded" v-if="props.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
+      <img class="rounded" :src="props.friendInfo.icon_url" v-else>
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
-        {{ props.friendInfo.username }}
+        {{ props.friendInfo.nickname }}
       </div>
-      <button style="outline: none;border: none;cursor: pointer;" @click="friendResponse()" v-if="isRequest[0]===false">수락하기</button>
+      <button style="outline: none;border: none;cursor: pointer;" @click="friendResponse()" v-if="isRequest[0]===false">
+        수락하기
+      </button>
       <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">수락완료</button>
     </div>
   </div>

@@ -4,33 +4,27 @@ import {reactive, ref} from "vue";
 import OtherUsers from "@/components/modal/freind/OtherUsers.vue";
 import RestApi from "@/script/axios/jwt/RestApi";
 import RequestUsers from "@/components/modal/freind/RequestUsers.vue";
-import router from "@/script/routes/router";
-
+import {useFriendStore} from "@/script/store/friend";
 
 const modalStore = useModalStore();
+const friendStore = useFriendStore();
 
 let buttonType = ref(1)
 let OtherUser = reactive([]);
-let RequestUser = reactive([]);
 let nickname = reactive(null);
-let afterSearch = reactive(null);
 
 function closeM() {
   modalStore.openClose('Friend')
-  router.go(0)
 }
 
 function initRequestUser() {
+  friendStore.RequestUser.splice(0,friendStore.RequestUser.length)
   RestApi.get(`/friend/requestUser`)
       .then(({data}) => {
         console.log("initRequestUser")
-        data.forEach(member => {
-            if (member.user_ICON_URL !== null && member.user_ICON_URL !== '') {
-                member.user_ICON_URL = "data:image/png;base64," + member.user_ICON_URL
-            } else {
-                member.user_ICON_URL = "data:image/png;base64,null"
-            }
-          RequestUser.push(member)
+        data.data.forEach(user => {
+          const userFrom = {user_id: user.user_id, nickname: user.nickname, icon_url: user.icon_url}
+          friendStore.pushRequestUser(userFrom)
         })
       })
       .catch(err => {
@@ -39,22 +33,18 @@ function initRequestUser() {
 }
 
 function findOtherUser() {
-  if (afterSearch !== nickname) {
-    OtherUser.splice(0, OtherUser.length)
-    afterSearch = nickname;
-    if (nickname !== null && nickname !== '') {
-      RestApi.post(`/friend/search/${nickname}`)
-          .then(({data}) => {
-            console.log(data.data)
-            data.data.forEach(user => {
-              const userFrom = {user_id:user.user_id,nickname:user.nickname,icon_url:user.icon_url}
-              OtherUser.push(userFrom)
-            })
-            console.log(OtherUser)
+  OtherUser.splice(0, OtherUser.length)
+  if (nickname !== null && nickname !== '') {
+    RestApi.post(`/friend/search/${nickname}`)
+        .then(({data}) => {
+          console.log(data.data)
+          data.data.forEach(user => {
+            const userFrom = {user_id: user.user_id, nickname: user.nickname, icon_url: user.icon_url}
+            OtherUser.push(userFrom)
           })
-    }
+          console.log(OtherUser)
+        })
   }
-
 }
 
 initRequestUser();
@@ -75,7 +65,7 @@ initRequestUser();
         <div :class="(buttonType===2)? 'active':'normal' " @click="buttonType=2">친구요청</div>
       </div>
       <div id="findUser" v-if="buttonType===1">
-        <div id="searchBox" >
+        <div id="searchBox">
           <input name="searchbox" placeholder="친구 찾기" v-model="nickname">
           <div id="check" @click="findOtherUser">확인</div>
         </div>
@@ -84,7 +74,7 @@ initRequestUser();
                     :request="false"/>
       </div>
       <div id="" v-else-if="buttonType===2">
-        <RequestUsers v-for="user in RequestUser" :key="user"
+        <RequestUsers v-for="user in friendStore.RequestUser" :key="user"
                       :friendInfo="user"
                       :request="false"/>
       </div>

@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, watch} from "vue";
+import {reactive} from "vue";
 import {useFriendStore} from "@/script/store/friend";
 import {useModalStore} from "@/script/store/modal";
 import SidebarMyInfo from "@/components/main/sidebar/SidebarMyInfo.vue";
@@ -17,11 +17,6 @@ function FriendM(){
   modalStore.open('Friend')
   console.log(modalStore.modal.Friend)
 }
-
-watch(()=>friendStore.getFriendList(),()=>{
-  friendList = friendStore.getFriendList()
-})
-let friendList = friendStore.getFriendList()
 
 
 </script>
@@ -55,7 +50,7 @@ let friendList = friendStore.getFriendList()
         <img src="/img/channelList/add_channel.png" style="width: 15px; height: 15px;cursor: pointer" @click="FriendM()">
       </div>
       <!----><!---->
-      <Friend v-for="friend in friendList" :key="friend"
+      <Friend v-for="friend in friendStore.friendList" :key="friend"
               :friendInfo="friend"/>
     </div>
     <SidebarMyInfo />
