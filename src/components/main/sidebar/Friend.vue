@@ -2,12 +2,12 @@
 import {defineProps} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useRouter} from "vue-router";
-// import {useFriendStore} from "../../../../script/stores/friend";
+//import {useFriendStore} from "@/script/store/friend";
 
 const props = defineProps({
   friendInfo: Object,
 })
-// const friendStore = useFriendStore();
+//const friendStore = useFriendStore();
 const router = useRouter();
 function openFriend() {
   RestApi.get(`/friend/${props.friendInfo.id}`, {}).then(({data}) => {
@@ -22,12 +22,12 @@ function openFriend() {
 <template>
   <div class="btnList" @click="openFriend()">
     <div style="width: 35px;">
-        <img class="rounded" v-if="props.friendInfo.user_ICON_URL === 'data:image/png;base64,null'" src="/img/channelList/bright_icon.png">
-        <img class="rounded" :src="props.friendInfo.user_ICON_URL">
+        <img class="rounded" v-if="props.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
+        <img class="rounded" :src="props.friendInfo.icon_url" v-else>
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
-        {{props.friendInfo.username}}
+        {{props.friendInfo.nickname}}
       </div>
       <div class="MyMember_exit">
         <img src="/img/sidebar/exit.png">

@@ -1,6 +1,6 @@
 <script setup>
-import {reactive} from "vue";
-// import {useFriendStore} from "../../../../script/stores/friend";
+import {reactive, watch} from "vue";
+import {useFriendStore} from "@/script/store/friend";
 import {useModalStore} from "@/script/store/modal";
 import SidebarMyInfo from "@/components/main/sidebar/SidebarMyInfo.vue";
 import Friend from "@/components/main/sidebar/Friend.vue";
@@ -10,7 +10,7 @@ const props = reactive({
   type: 'friend',
 })
 
-// const friendStore = useFriendStore();
+const friendStore = useFriendStore();
 const modalStore = useModalStore();
 
 function FriendM(){
@@ -18,10 +18,10 @@ function FriendM(){
   console.log(modalStore.modal.Friend)
 }
 
-// watch(()=>friendStore.getFriendList(),()=>{
-//   friendList = friendStore.getFriendList()
-// })
-// let friendList = friendStore.getFriendList()
+watch(()=>friendStore.getFriendList(),()=>{
+  friendList = friendStore.getFriendList()
+})
+let friendList = friendStore.getFriendList()
 
 
 </script>

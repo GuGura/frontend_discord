@@ -11,12 +11,13 @@ export const useUserStore = defineStore("userStore", () => {
         username: '',
         role: '',
         join_date: '',
-        nickname:'',
+        nickname: '',
         icon_url: '',
         description: ''
     })
+
     function updateMyInfo() {
-       return RestApi.post('/myInfo/basic')
+        return RestApi.post('/myInfo/basic')
             .then(({data}) => {
                 const userInfo = data.data
                 user.username = userInfo.username
@@ -24,13 +25,9 @@ export const useUserStore = defineStore("userStore", () => {
                 user.join_date = userInfo.join_date
                 user.nickname = userInfo.nickname
                 user.description = userInfo.description
+                user.icon_url = userInfo.icon_url
 
-                if(userInfo.icon_url?.trim()){
-                    user.icon_url = userInfo.icon_url
-                }else {
-                    user.icon_url = "data:image/png;base64,null"
-                }
-                localStorage.setItem('user',JSON.stringify(user))
+                localStorage.setItem('user', JSON.stringify(user))
             })
     }
 

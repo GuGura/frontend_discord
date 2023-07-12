@@ -2,16 +2,19 @@
 import ChannelList from "@/components/channel_list/ChannelList.vue";
 import LobbySidebar from "@/components/main/lobby/LobbySidebar.vue";
 import Loading from "@/components/Loading.vue";
-import {watch} from "vue";
+import {onMounted, watch} from "vue";
 import {useRouter} from "vue-router";
 import {useModalStore} from "@/script/store/modal";
 import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
+import {useFriendStore} from "@/script/store/friend";
 
 const modalStore = useModalStore();
 const channelStore = useChannelListStore();
 const userStore = useUserStore();
+const friendStore = useFriendStore();
 const route = useRouter()
+
 watch(route.currentRoute, (to,form) => {
   if (to.path !== form.path){
     const channel_type = channelStore.getPathEndPoint;
@@ -26,7 +29,12 @@ watch(route.currentRoute, (to,form) => {
     }
   }
 })
+onMounted(()=>{
+  channelStore.initBtn()
+})
+
 userStore.updateMyInfo();
+friendStore.initFriendList();
 </script>
 
 <template>

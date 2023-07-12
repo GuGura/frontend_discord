@@ -1,7 +1,6 @@
 <script setup>
 import ChannelIcon from "@/components/channel_list/ChannelIcon.vue";
 
-import {onMounted} from "vue";
 import {useChannelListStore} from "@/script/store/channel_list";
 import AddChannelModel from "@/components/modal/AddChannelModel.vue";
 import {useModalStore} from "@/script/store/modal";
@@ -9,9 +8,7 @@ import {useModalStore} from "@/script/store/modal";
 const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
 
-onMounted(() => {
-  channelListStore.initBtn()
-})
+
 
 </script>
 

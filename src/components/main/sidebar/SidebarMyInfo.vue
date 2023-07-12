@@ -32,13 +32,12 @@ const info = reactive({
   <div id="side_content_mystatus">
     <div style="display: flex;gap: 15px;">
       <div id="MyIcon">
-          <img src="/img/channelList/user_icon.png" alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-if="userStore.user.icon_url==='data:image/png;base64,null' ">
-          <img :src="userStore.user.icon_url"  alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-else-if="userStore.user.icon_url!=='data:image/png;base64,null'">
+          <img src="/img/channelList/user_icon.png" alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-if="userStore.user.icon_url===null ">
+          <img :src="userStore.user.icon_url"  alt="UserIcon" style="width: 40px;height: 40px;" class="rounded" v-else>
       </div>
       <div id="MyInfo">
         <div id="MyName" >
           {{info.nickname}}
-
         </div>
         <div id="MyStatus">
           {{updateEmail}}#1234

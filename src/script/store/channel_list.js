@@ -72,7 +72,7 @@ export const useChannelListStore = defineStore("channelListStore", () => {
 
     async function updateBtn(btn) {
         this.buttons.splice(1, 0, btn)
-        this.path.split(1,0,btn.channel_UID)
+        this.path.splice(1,0,btn.channel_UID)
     }
 
     return {
