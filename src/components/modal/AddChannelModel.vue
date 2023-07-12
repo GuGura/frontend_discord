@@ -2,18 +2,18 @@
 import {reactive} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useModalStore} from "@/script/store/modal";
-//import {useLobbyStore} from "../../../script/stores/lobby";
+import {useUserStore} from "@/script/store/userInfo";
 import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
 //import {createRoom} from "../../../script/chatOperations";
 
 const modalStore = useModalStore();
-//const userStore = useLobbyStore();
+const userStore = useUserStore();
 const channelListStore = useChannelListStore();
 
 let createChannel = reactive({
   fileURL: '/img/sidebar/choose.png',
-  channelName: 'admin 님의 서버',
+  channelName: userStore.user.nickname + ' 님의 서버',
   inviteCode: ''
 })
 let channelCode = reactive({

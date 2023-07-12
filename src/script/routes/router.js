@@ -21,6 +21,11 @@ const routes = [
         meta: {isJwtExist: true},
         props: true
     },
+    {
+        path: '/',
+        name: 'baseURL',
+        redirect: '/channel/lobby'
+    },
 ]
 
 // 3. Create the router instance and pass the `routes` option
@@ -34,6 +39,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, form, next) => {
     const JwtExist = await initJwt.checkAccessJwt();
+
     if (to.meta.isJwtExist && !JwtExist) next(`/login`);
     else if (!to.meta.isJwtExist && JwtExist) next(`/channel/lobby`);
     else if (form.meta.isJwtExist && !JwtExist) next(`/login`);
