@@ -30,7 +30,7 @@ function openModal2() {
       <div id="icon_URL">
         <img src="/img/channelList/user_icon.png" alt="UserIcon" style="display: flex;flex: 1;" class="rounded"
              v-if="propsLobby.icon_url==='' ">
-        <img :src="propsLobby.icon_url" alt="UserIcon" style="width: 200px;" class="rounded" v-else>
+        <img :src="propsLobby.icon_url" alt="UserIcon" style="width: 100%;height: 100%;border-radius: 5px" class="rounded" v-else>
       </div>
       <div id="userName" class="">
         <div class="order-md-2">
@@ -111,7 +111,7 @@ form[name=list] {
   display: flex;
   height: 25%;
   align-items: flex-end;
-  padding: 10px 30px 15px;
+  padding: 15px 30px;
   gap: 35px;
   color: #fff;
 }
@@ -119,7 +119,7 @@ form[name=list] {
 #icon_URL {
   display: flex;
   width: 10em;
-  height: 10em;
+  height: 100%;
 }
 
 #userName {
