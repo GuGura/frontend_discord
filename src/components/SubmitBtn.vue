@@ -1,12 +1,12 @@
 <template>
   <div>
-    <button>{{ props.text }}</button>
+    <button>{{ propsSubmitBtn.text }}</button>
   </div>
 </template>
 
 <script setup>
 // eslint-disable-next-line no-undef
-const props = defineProps({
+const propsSubmitBtn = defineProps({
   text: String
 })
 </script>

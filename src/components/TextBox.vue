@@ -1,18 +1,18 @@
 <template>
   <div class="inputBox">
     <div class="text">
-      <div id="idInfo">{{ props.subject }}</div>
-      <div :style="props.noticeColor">{{ props.notice }}</div>
+      <div id="idInfo">{{ propsTextBox.subject }}</div>
+      <div :style="propsTextBox.noticeColor">{{ propsTextBox.notice }}</div>
     </div>
-    <input class="textBox" :type="props.boxType" :name="props.boxName" @input="handleModelValue"
-           :pattern="props.pattern" :autocomplete="props.autocomplete" required>
+    <input class="textBox" :type="propsTextBox.boxType" :name="propsTextBox.boxName" @input="handleModelValue"
+           :pattern="propsTextBox.pattern" :autocomplete="propsTextBox.autocomplete" required>
   </div>
 </template>
 
 <script setup>
 import {defineProps, defineEmits} from 'vue'
 
-const props = defineProps({
+const propsTextBox = defineProps({
   boxType: String,
   boxName: String,
   subject: String,

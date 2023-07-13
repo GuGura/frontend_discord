@@ -21,11 +21,7 @@ const routes = [
         meta: {isJwtExist: true},
         props: true
     },
-    {
-        path: '/',
-        name: 'baseURL',
-        redirect: '/channel/lobby'
-    },
+
 ]
 
 // 3. Create the router instance and pass the `routes` option

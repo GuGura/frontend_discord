@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, reactive, ref} from "vue";
+import {reactive} from "vue";
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useRouter} from "vue-router";
 
@@ -14,41 +14,16 @@ export const useChannelListStore = defineStore("channelListStore", () => {
             channel_type: 'lobby'
         },
     ])
-    let path = reactive([]);
-
-
 
     const router = useRouter();
 
-    const getPathEndPoint = (computed(() => {
-        const path = router.currentRoute.value.href.split('/');
-        let triumphant = null
-        if (!(path[2] === 'lobby' || path[2] === 'public' || path[2] === 'addServer'))
-            triumphant = Number(path[2]);
-        else
-            triumphant = path[2]
-        return triumphant;
-    }))
-
-    const getEndPoint = computed(() => {
-        const pathSegments = router.currentRoute.value.path.split('/');
-        return pathSegments[2];
-    });
-
-    let btnResult = ref({
-        endPoint: 'lobby',
-    })
-
     async function initBtn() {
         console.log("initBtn")
-        path.push("lobby")
-        await RestApi.get("/myInfo/channelList")
+        await RestApi.post("/myInfo/channelList")
             .then(({data}) => {
                 const resultArray = data.data;
                 resultArray.forEach(btn => {
                     buttons.push(btn)
-                    if (btn.channel_UID === 0 )path.push(btn.channel_title)
-                    else if (typeof btn.channel_UID === 'number') path.push(btn.channel_UID)
                 })
             })
     }
@@ -70,17 +45,12 @@ export const useChannelListStore = defineStore("channelListStore", () => {
             })
     }
 
-    async function updateBtn(btn) {
-        this.buttons.splice(1, 0, btn)
-        this.path.splice(1,0,btn.channel_UID)
+    function updateBtn(btn) {
+         this.buttons.splice(1, 0, btn)
     }
 
     return {
         buttons,
-        path,
-        btnResult,
-        getPathEndPoint,
-        getEndPoint,
         leaveChannel,
         router,
         initBtn,

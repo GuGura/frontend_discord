@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import RestApi from "@/script/axios/jwt/RestApi";
 
 
@@ -20,6 +20,7 @@ export const useUserStore = defineStore("userStore", () => {
         return RestApi.post('/myInfo/basic')
             .then(({data}) => {
                 const userInfo = data.data
+                console.log(data.data)
                 user.username = userInfo.username
                 user.role = userInfo.role
                 user.join_date = userInfo.join_date
@@ -30,9 +31,29 @@ export const useUserStore = defineStore("userStore", () => {
                 localStorage.setItem('user', JSON.stringify(user))
             })
     }
-
+    let getNickname =()=>(computed(()=>{
+        return user.nickname;
+    }))
+    let getDescription =()=>(computed(()=>{
+        return user.description;
+    }))
+    let getIconURL =()=>(computed(()=>{
+        return user.icon_url;
+    }))
+    function uploadMyInfo(index){
+        user.nickname = index.username;
+        user.description = index.description;
+        user.icon_url = index.icon_url
+        localStorage.getItem('user').replace('nickname',index.nickname)
+        localStorage.getItem('user').replace('description',index.description)
+        localStorage.getItem('user').replace('icon_url',index.icon_url)
+    }
     return {
         user,
+        getNickname,
+        getDescription,
+        getIconURL,
+        uploadMyInfo,
         updateMyInfo
     }
 });

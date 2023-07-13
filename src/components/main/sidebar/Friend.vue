@@ -2,19 +2,17 @@
 import {defineProps} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useRouter} from "vue-router";
-//import {useFriendStore} from "@/script/store/friend";
 
-const props = defineProps({
+const propsFriend = defineProps({
   friendInfo: Object,
 })
-//const friendStore = useFriendStore();
 const router = useRouter();
 function openFriend() {
-  RestApi.get(`/friend/${props.friendInfo.id}`, {}).then(({data}) => {
+  RestApi.post(`/friend/${propsFriend.friendInfo.id}`, {}).then(({data}) => {
     // friendStore.user.id = data
     // friendStore.updateFriendInfo()
     console.log(data)
-    router.push(`/channel/friend/${props.friendInfo.id}`)
+    router.push(`/channel/friend/${propsFriend.friendInfo.id}`)
   })
 }
 </script>
@@ -22,12 +20,12 @@ function openFriend() {
 <template>
   <div class="btnList" @click="openFriend()">
     <div style="width: 35px;">
-        <img class="rounded" v-if="props.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
-        <img class="rounded" :src="props.friendInfo.icon_url" v-else>
+        <img class="rounded" v-if="propsFriend.friendInfo.icon_url === ''" src="/img/channelList/bright_icon.png">
+        <img class="rounded" :src="propsFriend.friendInfo.icon_url" v-else>
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
-        {{props.friendInfo.nickname}}
+        {{propsFriend.friendInfo.nickname}}
       </div>
     </div>
   </div>

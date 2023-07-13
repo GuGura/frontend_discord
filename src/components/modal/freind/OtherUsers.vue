@@ -2,15 +2,15 @@
 import {defineProps, reactive} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
 
-const props = defineProps({
+const propsOtherUsers = defineProps({
   friendInfo: Object,
   request: Boolean,
 })
-let isRequest = reactive([props.request])
+let isRequest = reactive([propsOtherUsers.request])
 
 function friendSend() {
-console.log(props.friendInfo.user_id)
-  RestApi.post(`/friend/send/${props.friendInfo.user_id}`)
+console.log(propsOtherUsers.friendInfo.user_id)
+  RestApi.post(`/friend/send/${propsOtherUsers.friendInfo.user_id}`)
       .then(() => {
         isRequest[0] = true
       })
@@ -25,12 +25,12 @@ console.log(props.friendInfo.user_id)
 <template>
   <div class="btnList" >
     <div style="width: 35px;">
-        <img class="rounded" v-if="props.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
-        <img class="rounded" :src="props.friendInfo.icon_url" v-else>
+        <img class="rounded" v-if="propsOtherUsers.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
+        <img class="rounded" :src="propsOtherUsers.friendInfo.icon_url" v-else>
     </div>
     <div class="MyMember_Info">
       <div class="MyMember_Name">
-        {{ props.friendInfo.nickname }}
+        {{ propsOtherUsers.friendInfo.nickname }}
       </div>
       <button style="outline: none;border: none;cursor: pointer;" @click="friendSend()" v-if="isRequest[0]===false">친구요청</button>
       <button style="outline: none;border: none;cursor: pointer;" v-else-if="isRequest[0]===true">요청완료</button>

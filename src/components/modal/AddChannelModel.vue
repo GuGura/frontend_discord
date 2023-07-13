@@ -2,15 +2,14 @@
 import {reactive} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useModalStore} from "@/script/store/modal";
-import {useUserStore} from "@/script/store/userInfo";
 import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
+import {useUserStore} from "@/script/store/userInfo";
 //import {createRoom} from "../../../script/chatOperations";
 
 const modalStore = useModalStore();
-const userStore = useUserStore();
 const channelListStore = useChannelListStore();
-
+const userStore = useUserStore();
 let createChannel = reactive({
   fileURL: '/img/sidebar/choose.png',
   channelName: userStore.user.nickname + ' 님의 서버',
@@ -32,14 +31,15 @@ async function createServer() {
     modalStore.open('loading')
     await RestApi.post("/channel/create", createChannel)
         .then(({data}) => {
-          modalStore.terminate('loading')
+          console.log(data.data)
           const result = data.data.channel_UID
+          router.push(`/channel/${result}`)
+          router.go(1);
+          modalStore.terminate('loading')
           channelListStore.updateBtn(data.data)
           localStorage.setItem('selectChannel', data.data.channel_title)
           localStorage.setItem('newChannelUID', data.data.channel_UID)
           //createRoom(localStorage.getItem('newChannelUID'), props);
-          router.push(`/channel/${result}`)
-          router.go(1);
         })
         .catch(err => {
           modalStore.terminate('loading')

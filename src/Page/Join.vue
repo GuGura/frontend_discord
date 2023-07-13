@@ -63,7 +63,7 @@ import SubmitBtn from "@/components/SubmitBtn.vue";
 import TextBox from "@/components/TextBox.vue";
 import BaseURL from "@/script/axios/BaseURL";
 
-const props = defineProps({
+const joinProps = defineProps({
   isPass: Boolean
 })
 const joinInfo = reactive({
@@ -73,7 +73,7 @@ const joinInfo = reactive({
   password: null,
 });
 let isInfoTrue = reactive({
-  isPass: props.isPass,
+  isPass: joinProps.isPass,
   isSame: '',
 });
 

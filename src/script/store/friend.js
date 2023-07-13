@@ -23,12 +23,19 @@ export const useFriendStore = defineStore("friendStore", () => {
         RequestUser.push(index);
     }
     function initFriendList(){
-        RestApi.get('/myInfo/friendList')
+        RestApi.post('/myInfo/friendList')
             .then(({data})=>{
-                data.data.forEach(member =>{friendList.push(member)})
+                if (data.data)
+                    data.data.forEach(member =>{friendList.push(member)})
             })
             .catch(err=>{console.log(err)})
     }
+
+
+
+
+
+    //----------------------------------------------------------------------------------------------------------
     function updateFriendInfo() {
         localStorage.removeItem('friend')
         RestApi.post('/myInfo/friend',{friendId:user.id})

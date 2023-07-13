@@ -8,6 +8,7 @@ import {useModalStore} from "@/script/store/modal";
 import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
 import {useFriendStore} from "@/script/store/friend";
+import Lobby from "@/components/main/lobby/Lobby.vue";
 
 const modalStore = useModalStore();
 const channelStore = useChannelListStore();
@@ -29,6 +30,7 @@ watch(route.currentRoute, (to,form) => {
     }
   }
 })
+
 onMounted(()=>{
   channelStore.initBtn()
 })
@@ -41,8 +43,7 @@ friendStore.initFriendList();
   <div id="container">
     <ChannelList/>
     <div id="contents" v-if="route.currentRoute.value.path === '/channel/lobby'">
-      <LobbySidebar/>
-
+      <Lobby/>
     </div>
     <Loading v-if="modalStore.modal.loading"/>
   </div>

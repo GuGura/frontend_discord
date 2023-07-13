@@ -3,6 +3,7 @@ import refreshHeader from "@/script/axios/jwt/refreshHeader";
 
 const RestApi = axios.create({
     baseURL: 'http://localhost:8080/api/v2/',
+    withCredentials: true
 });
 RestApi.interceptors.request.use(
     function (config) {

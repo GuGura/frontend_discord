@@ -1,17 +1,24 @@
 <script setup>
-import {defineProps} from 'vue'
-
-import {useChannelListStore} from "@/script/store/channel_list";
+import {computed, defineProps} from 'vue'
 import {useModalStore} from "@/script/store/modal";
 import {useRouter} from "vue-router";
 
-const ChannelListStore = useChannelListStore();
 const modalStore = useModalStore();
 const router = useRouter();
 
 const props = defineProps({
   buttonData: Object,
 })
+let getPathEndPoint = (computed(() => {
+  const path = router.currentRoute.value.href.split('/');
+  let triumphant = null
+  if (!(path[2] === 'lobby' || path[2] === 'public' || path[2] === 'addServer'))
+    triumphant = Number(path[2]);
+  else
+    triumphant = path[2]
+  return triumphant;
+}));
+
 function btnClick() {
   if (props.buttonData.channel_title === 'addServer') {
     modalStore.open('addServer');
@@ -28,9 +35,9 @@ function btnClick() {
 
 <template>
   <div class="server_Icon" @click="btnClick"
-       :class=" {br : (ChannelListStore.getPathEndPoint === props.buttonData.channel_title)||(ChannelListStore.getPathEndPoint===props.buttonData.channel_UID) }">
+       :class=" {br : (getPathEndPoint === props.buttonData.channel_title)||(getPathEndPoint===props.buttonData.channel_UID) }">
     <div class="colorBlue" style="width: 100%;height: 100%;text-align: center;"
-         :class="{colorBlue1 : props.buttonData.channel_UID === ChannelListStore.getPathEndPoint}"
+         :class="{colorBlue1 : props.buttonData.channel_UID === getPathEndPoint}"
          v-if="props.buttonData.channel_icon_url === null">
       <div class="title">{{ props.buttonData.channel_title }}</div>
     </div>
@@ -39,8 +46,8 @@ function btnClick() {
          v-else-if="props.buttonData.channel_title === 'lobby' || props.buttonData.channel_title === 'addServer' || props.buttonData.channel_title === 'public'"
          :src="props.buttonData.channel_icon_url" alt=""
          :class="{ colorGreen: props.buttonData.channel_title === 'addServer' || props.buttonData.channel_title === 'public', colorBlue: props.buttonData.channel_title === 'lobby' ,
-         colorBlue1 : (ChannelListStore.getPathEndPoint === props.buttonData.channel_title) && props.buttonData.channel_title==='lobby',
-         colorGreen1:(ChannelListStore.getPathEndPoint === props.buttonData.channel_title) && props.buttonData.channel_title === 'public'}">
+         colorBlue1 : (getPathEndPoint === props.buttonData.channel_title) && props.buttonData.channel_title==='lobby',
+         colorGreen1:(getPathEndPoint === props.buttonData.channel_title) && props.buttonData.channel_title === 'public'}">
 
     <div class="img channelImage" v-else :style="{backgroundImage: `url(${props.buttonData.channel_icon_url})`}"/>
   </div>
@@ -52,6 +59,7 @@ function btnClick() {
   background-position: center;
   background-size: contain;
 }
+
 .img {
   width: 100%;
   height: 100%;
@@ -59,15 +67,18 @@ function btnClick() {
   padding: 12px;
   cursor: pointer;
 }
+
 #Icon {
-   width: 50px;
-   height: 50px;
- }
+  width: 50px;
+  height: 50px;
+}
+
 .IconURL {
   border-radius: 50%;
   background-position: center;
   background-size: contain;
 }
+
 .server_Icon {
   width: 50px;
   height: 50px;
