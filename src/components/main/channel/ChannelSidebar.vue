@@ -13,7 +13,8 @@ import {reactive} from "vue";
 // const userStore = useUserStore();
 const channelStore = useChannelStore();
 const channelInfo = reactive({
-  channel_title: channelStore.getChannel_title()
+  channel_title: channelStore.getChannel_title(),
+  channel_UID: channelStore.getChannel_UID()
 })
 // const roomInfo = reactive({
 //   name: '',
@@ -59,7 +60,7 @@ const channelInfo = reactive({
   <div id="side_contents">
     <ChannelSidebarHead
         :channel_title="channelInfo.channel_title"
-        :channel_invite_code="'ㄴㄴㄴ'"/>
+        :channel_UID="channelInfo.channel_UID"/>
 
     <div id="side_content_info">
       <div id="chatRooms">

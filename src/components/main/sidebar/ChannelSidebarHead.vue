@@ -4,24 +4,35 @@ import {useModalStore} from "@/script/store/modal";
 //import CreateRoomModal from "@/components/modal/CreateRoomModal.vue";
 import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
+import RestApi from "@/script/axios/jwt/RestApi";
 
 const props = defineProps({
   channel_title: String,
-  channel_invite_code : String
+  channel_UID: Number,
 });
 const modalStore = useModalStore();
 
-function btnCreateRoom(){
+function btnCreateRoom() {
   modalStore.openClose('RoomToggle')
   modalStore.open('CreateRoom')
 }
-function checkInviteCode(){
-  // eslint-disable-next-line no-undef
-  Swal.fire(props.channel_invite_code);
+
+function checkInviteCode() {
+  RestApi.post(`/channel/createInviteCode/${props.channel_UID}`)
+      .then(({data}) => {
+        // eslint-disable-next-line no-undef
+        Swal.fire(data.data);
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-undef
+        Swal.fire('Fail!', err.response.data.message, 'error')
+      })
+
   modalStore.openClose('RoomToggle')
 }
-function leaveChannel(){
-  if (confirm('정말 나가겠습니까?')){
+
+function leaveChannel() {
+  if (confirm('정말 나가겠습니까?')) {
     useChannelListStore().leaveChannel()
     router.push('/channel/lobby')
   }
@@ -39,7 +50,7 @@ function leaveChannel(){
     </div>
   </div>
   <div id="toggle" v-if="modalStore.modal.RoomToggle ===true">
-    <div @click="checkInviteCode()">초대코드 확인 </div>
+    <div @click="checkInviteCode()">초대코드 확인</div>
     <div @click="btnCreateRoom()">방 생성</div>
     <div @click="leaveChannel()">서버 나가기</div>   <!-- 유저 or 매니저-->
   </div>
@@ -73,6 +84,7 @@ function leaveChannel(){
 #toggle div:nth-last-child(1) {
   color: red;
 }
+
 #toggle div:nth-of-type(1) {
   color: #4752C4;
 }
