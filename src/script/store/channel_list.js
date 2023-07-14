@@ -48,8 +48,9 @@ export const useChannelListStore = defineStore("channelListStore", () => {
                     }
                 })
             })
-            .catch(() => {
-                console.log("fail")
+            .catch((err) => {
+                // eslint-disable-next-line no-undef
+                Swal.fire('Fail!', err.response.data.message, 'error')
             })
     }
 
