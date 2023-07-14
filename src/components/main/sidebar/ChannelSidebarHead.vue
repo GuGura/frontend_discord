@@ -33,11 +33,30 @@ function checkInviteCode() {
 }
 
 function leaveChannel() {
-  if (confirm('정말 나가겠습니까?')) {
-    useChannelListStore().leaveChannel()
-    router.push('/channel/lobby')
-  }
-  modalStore.openClose('RoomToggle')
+  // eslint-disable-next-line no-undef
+  Swal.fire({
+    title: '채널 퇴장',
+    text: "정말 나가겠습니까?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ok'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      router.push('/channel/lobby')
+      useChannelListStore().leaveChannel()
+      modalStore.openClose('RoomToggle')
+      // eslint-disable-next-line no-undef
+      Swal.fire(
+          'Deleted!',
+          '채널 삭제 완료',
+          'success'
+      )
+    }
+  })
+
+
 }
 </script>
 
