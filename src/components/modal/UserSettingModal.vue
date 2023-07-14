@@ -29,10 +29,9 @@ function imgChange(e) {
   }
 }
 
-
-async function uploadProfile() {
+ function uploadProfile() {
   exitModal();
-  await RestApi.put("/myInfo/updateProfile", profileForm
+  RestApi.put("/myInfo/updateProfile", profileForm
   ).then(({data}) => {
     console.log(data)
     userStore.user.nickname = data.data.nickname;

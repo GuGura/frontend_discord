@@ -34,7 +34,13 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, form, next) => {
-    if (to.path!== '/login' && to.path !== '/join'){
+    const token = localStorage.getItem('token')
+    if (token !== null && to.path === '/'){
+        next('/channel/lobby')
+    }else if(token === null && to.path === '/'){
+        next('/login')
+    }
+    else if (to.path!== '/login' && to.path !== '/join'){
         const JwtExist = await initJwt.checkAccessJwt();
 
         if (to.meta.isJwtExist && !JwtExist) next(`/login`);

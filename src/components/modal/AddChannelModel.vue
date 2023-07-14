@@ -22,22 +22,22 @@ let channelCode = reactive({
   result: '*'
 })
 
-async function createServer() {
+function createServer() {
   if (createChannel.channelName !== '') {
     modalStore.terminate('addServer')
     modalStore.open('loading')
-    await RestApi.post("/channel/create", createChannel)
+    RestApi.post("/channel/create", createChannel)
         .then(({data}) => {
-          console.log(data.data)
           const result = data.data.channel_UID
           router.push(`/channel/${result}`)
-          router.go(1);
+          console.log(data.data)
           modalStore.terminate('loading')
           channelListStore.updateBtn(data.data)
+
           channelStore.channel.channel_UID = data.data.channel_UID
           channelStore.channel.channel_title = data.data.channel_title
           channelStore.channel.channel_icon_url = data.data.channel_icon_url
-          //createRoom(localStorage.getItem('newChannelUID'), props);
+          // createRoom(localStorage.getItem('newChannelUID'), props);
         })
         .catch(err => {
           modalStore.terminate('loading')
