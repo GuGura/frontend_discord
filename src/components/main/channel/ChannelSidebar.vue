@@ -14,7 +14,8 @@ import {reactive} from "vue";
 const channelStore = useChannelStore();
 const channelInfo = reactive({
   channel_title: channelStore.getChannel_title(),
-  channel_UID: channelStore.getChannel_UID()
+  channel_UID: channelStore.getChannel_UID(),
+  channel_icon_url: channelStore.getChannel_icon_url(),
 })
 // const roomInfo = reactive({
 //   name: '',
@@ -60,7 +61,9 @@ const channelInfo = reactive({
   <div id="side_contents">
     <ChannelSidebarHead
         :channel_title="channelInfo.channel_title"
-        :channel_UID="channelInfo.channel_UID"/>
+        :channel_UID="channelInfo.channel_UID"
+        :channel_icon_url="channelInfo.channel_icon_url"
+    />
 
     <div id="side_content_info">
       <div id="chatRooms">
@@ -152,7 +155,7 @@ img {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 50px 10px;
+  padding: 0 10px;
   gap: 1px;
 }
 

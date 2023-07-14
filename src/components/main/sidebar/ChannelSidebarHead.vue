@@ -9,6 +9,7 @@ import RestApi from "@/script/axios/jwt/RestApi";
 const props = defineProps({
   channel_title: String,
   channel_UID: Number,
+  channel_icon_url: String,
 });
 const modalStore = useModalStore();
 
@@ -41,15 +42,18 @@ function leaveChannel() {
 </script>
 
 <template>
-  <div id="chatRooms_Header" @click="modalStore.openClose('RoomToggle')">
-    <div style="font-size: 18px;font-weight: bold; color: #fff;">
+  <div id="chatRooms_Header" @click="modalStore.openClose('RoomToggle')" :class="(props.channel_icon_url!== null)? 'height100':'height50'">
+    <div style="font-size: 18px;font-weight: bold; color: #fff;" v-if="props.channel_icon_url===null">
       {{ props.channel_title }}
     </div>
-    <div style="display: flex; height: 25px">
+    <div class="channelImage"  :style="{backgroundImage: `url(${props.channel_icon_url})`}" v-else-if="channel_icon_url!==null" >
+      {{ props.channel_title }}
+    </div>
+    <div style="display: flex;height: 25px;position: absolute;right: 0;">
       <img src="/img/sidebar/down.png" style="width: 100%;height: 100%">
     </div>
   </div>
-  <div id="toggle" v-if="modalStore.modal.RoomToggle ===true">
+  <div id="toggle" v-if="modalStore.modal.RoomToggle ===true" :class="(props.channel_icon_url!== null)? 'toggle100':'toggle50'">
     <div @click="checkInviteCode()">초대코드 확인</div>
     <div @click="btnCreateRoom()">방 생성</div>
     <div @click="leaveChannel()">서버 나가기</div>   <!-- 유저 or 매니저-->
@@ -58,10 +62,41 @@ function leaveChannel() {
 </template>
 
 <style scoped>
-#toggle {
+.channelImage {
+  background-position: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  padding: 10px 15px;
+  flex: 1;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 5px 0 0 0;
+}
+.height50{
+  height: 50px;
+  align-items: center;
+  padding: 10px 15px;
+}.height100{
+  height: 100px;
+}
+.toggle50 {
   color: #fff;
   position: absolute;
   top: 53px;
+  left: 10px;
+
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px;
+  width: 220px;
+  border-radius: 5px;
+  background-color: #111214;
+}.toggle100 {
+  color: #fff;
+  position: absolute;
+  top: 103px;
   left: 10px;
 
   gap: 10px;
@@ -97,13 +132,10 @@ function leaveChannel() {
 #chatRooms_Header {
   display: flex;
   min-width: 240px;
-  align-items: center;
-  padding: 0 15px;
   cursor: pointer;
-  height: 50px;
   top: 0;
   left: 0;
-  position: absolute;
+  position: relative;
   border-bottom: 1px solid #1F2123;
   border-radius: 10px 0 0 0;
   justify-content: space-between;
