@@ -1,10 +1,10 @@
 <script setup>
 import {defineProps} from 'vue'
 import {useModalStore} from "@/script/store/modal";
-//import CreateRoomModal from "@/components/modal/CreateRoomModal.vue";
 import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
 import RestApi from "@/script/axios/jwt/RestApi";
+import CreateRoomModal from "@/components/modal/CreateRoomModal.vue";
 
 const props = defineProps({
   channel_title: String,

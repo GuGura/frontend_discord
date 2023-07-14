@@ -64,6 +64,9 @@ async function attendChannel() {
         exitModal();
         localStorage.setItem('selectChannel', data.data.channel_title)
         router.push(`/channel/${data.data.channel_UID}`)
+        channelStore.channel.channel_UID = data.data.channel_UID
+        channelStore.channel.channel_title = data.data.channel_title
+        channelStore.channel.channel_icon_url = data.data.channel_icon_url
       }).catch((err) => {
         console.log(err.response.data.message)
         channelCode.result = "-" + err.response.data.message;
