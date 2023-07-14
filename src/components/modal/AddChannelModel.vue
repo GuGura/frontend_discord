@@ -21,11 +21,6 @@ let channelCode = reactive({
   channelCode: '',
   result: '*'
 })
-// const props = reactive({
-//   type: 'Text',
-//   name: 'Text Chatting Room',
-//   room_type: false,
-// })
 
 async function createServer() {
   if (createChannel.channelName !== '') {

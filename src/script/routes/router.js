@@ -34,12 +34,16 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, form, next) => {
-    const JwtExist = await initJwt.checkAccessJwt();
+    if (to.path!== '/login' && to.path !== '/join'){
+        const JwtExist = await initJwt.checkAccessJwt();
 
-    if (to.meta.isJwtExist && !JwtExist) next(`/login`);
-    else if (!to.meta.isJwtExist && JwtExist) next(`/channel/lobby`);
-    else if (form.meta.isJwtExist && !JwtExist) next(`/login`);
-    else next();
+        if (to.meta.isJwtExist && !JwtExist) next(`/login`);
+        else if (!to.meta.isJwtExist && JwtExist) next(`/channel/lobby`);
+        else if (form.meta.isJwtExist && !JwtExist) next(`/login`);
+        else next();
+    }else{
+        next();
+    }
 })
 
 export default router;

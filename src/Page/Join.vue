@@ -83,7 +83,7 @@ function AuthenticatedEmail() {
     Swal.fire("이메일을 입력해주세요")
     return;
   }
-  BaseURL.post("sign/sendMail", joinInfo)
+  BaseURL.post("/sign/sendMail", joinInfo)
       .then(({data}) => {
         // eslint-disable-next-line no-undef
         Swal.fire('Good job!', data.message, 'success')

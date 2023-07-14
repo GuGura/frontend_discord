@@ -8,7 +8,8 @@ import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
 import {useFriendStore} from "@/script/store/friend";
 import Lobby from "@/components/main/lobby/Lobby.vue";
-import ChannelSidebar from "@/components/main/channel/ChannelSidebar.vue";
+
+import Channel from "@/components/main/channel/Channel.vue";
 
 const modalStore = useModalStore();
 const channelStore = useChannelListStore();
@@ -38,10 +39,11 @@ function init(){
 init()
 onMounted(()=>{
   channelStore.initBtn()
+  userStore.updateMyInfo();
+  friendStore.initFriendList();
 })
 
-userStore.updateMyInfo();
-friendStore.initFriendList();
+
 </script>
 
 <template>
@@ -51,8 +53,7 @@ friendStore.initFriendList();
       <Lobby/>
     </div>
     <div id="contents" v-else>
-      <ChannelSidebar/>
-
+      <Channel/>
     </div>
     <Loading v-if="modalStore.modal.loading"/>
   </div>
