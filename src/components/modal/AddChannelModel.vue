@@ -5,10 +5,12 @@ import {useModalStore} from "@/script/store/modal";
 import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
+import {useChannelStore} from "@/script/store/channel";
 //import {createRoom} from "../../../script/chatOperations";
 
 const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
+const channelStore = useChannelStore();
 const userStore = useUserStore();
 let createChannel = reactive({
   fileURL: '/img/sidebar/choose.png',
@@ -37,8 +39,9 @@ async function createServer() {
           router.go(1);
           modalStore.terminate('loading')
           channelListStore.updateBtn(data.data)
-          localStorage.setItem('selectChannel', data.data.channel_title)
-          localStorage.setItem('newChannelUID', data.data.channel_UID)
+          channelStore.channel.channel_UID = data.data.channel_UID
+          channelStore.channel.channel_title = data.data.channel_title
+          channelStore.channel.channel_icon_url = data.data.channel_icon_url
           //createRoom(localStorage.getItem('newChannelUID'), props);
         })
         .catch(err => {

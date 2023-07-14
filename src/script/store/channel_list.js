@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useRouter} from "vue-router";
 
@@ -14,7 +14,15 @@ export const useChannelListStore = defineStore("channelListStore", () => {
             channel_type: 'lobby'
         },
     ])
-
+    let getPathEndPoint = (computed(() => {
+        const path = router.currentRoute.value.href.split('/');
+        let triumphant = null
+        if (!(path[2] === 'lobby' || path[2] === 'public' || path[2] === 'addServer'))
+            triumphant = Number(path[2]);
+        else
+            triumphant = path[2]
+        return triumphant;
+    }));
     const router = useRouter();
 
     async function initBtn() {
@@ -51,6 +59,7 @@ export const useChannelListStore = defineStore("channelListStore", () => {
 
     return {
         buttons,
+        getPathEndPoint,
         leaveChannel,
         router,
         initBtn,

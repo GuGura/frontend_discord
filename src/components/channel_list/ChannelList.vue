@@ -9,14 +9,19 @@ const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
 
 
-
 </script>
 
 <template>
   <div id="serverList">
     <div class="box1">
       <form name="serverList">
-        <ChannelIcon v-for="button in channelListStore.buttons" :key="button" :buttonData="button"/>
+        <ChannelIcon v-for="button in channelListStore.buttons" :key="button"
+                     :channel_UID="button.channel_UID"
+                     :user_UID="button.user_UID"
+                     :channel_title="button.channel_title"
+                     :channel_icon_url="button.channel_icon_url"
+                     :channel_type="button.channel_type"
+        />
       </form>
     </div>
     <AddChannelModel

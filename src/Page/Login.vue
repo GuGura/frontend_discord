@@ -72,7 +72,8 @@ function login() {
         localStorage.setItem(`token`, JSON.stringify(token)) //토큰 저장까지 확인
         router.push("/").then(() => console.log("로그인 성공"))
       })
-      .catch((err) => {
+      .catch(({err}) => {
+        console.log(err)
         // eslint-disable-next-line no-undef
         Swal.fire('Fail!', err.response.data.message, 'error')
       })

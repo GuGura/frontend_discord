@@ -1,6 +1,5 @@
 <script setup>
 import ChannelList from "@/components/channel_list/ChannelList.vue";
-import LobbySidebar from "@/components/main/lobby/LobbySidebar.vue";
 import Loading from "@/components/Loading.vue";
 import {onMounted, watch} from "vue";
 import {useRouter} from "vue-router";
@@ -9,6 +8,7 @@ import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
 import {useFriendStore} from "@/script/store/friend";
 import Lobby from "@/components/main/lobby/Lobby.vue";
+import ChannelSidebar from "@/components/main/channel/ChannelSidebar.vue";
 
 const modalStore = useModalStore();
 const channelStore = useChannelListStore();
@@ -16,9 +16,11 @@ const userStore = useUserStore();
 const friendStore = useFriendStore();
 const route = useRouter()
 
+
 watch(route.currentRoute, (to,form) => {
+  console.log(to.path)
   if (to.path !== form.path){
-    const channel_type = channelStore.getPathEndPoint;
+    const channel_type = 1;
     console.log(typeof channel_type)
     switch (channel_type){
       case 'lobby':
@@ -30,7 +32,10 @@ watch(route.currentRoute, (to,form) => {
     }
   }
 })
+function init(){
 
+}
+init()
 onMounted(()=>{
   channelStore.initBtn()
 })
@@ -44,6 +49,10 @@ friendStore.initFriendList();
     <ChannelList/>
     <div id="contents" v-if="route.currentRoute.value.path === '/channel/lobby'">
       <Lobby/>
+    </div>
+    <div id="contents" v-else>
+      <ChannelSidebar/>
+
     </div>
     <Loading v-if="modalStore.modal.loading"/>
   </div>
