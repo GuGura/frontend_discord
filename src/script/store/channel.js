@@ -7,7 +7,9 @@ export const useChannelStore = defineStore("channelStore", () => {
     const channel = reactive({
         channel_UID: -1,
         channel_title: '',
-        channel_icon_url: ''
+        channel_icon_url: '',
+        channel_TextRoom:[],
+        channel_VoiceRoom:[]
     })
     let getChannel_UID =()=>(computed(()=>{
         return channel.channel_UID;
@@ -18,7 +20,12 @@ export const useChannelStore = defineStore("channelStore", () => {
     let getChannel_icon_url =()=>(computed(()=>{
         return channel.channel_icon_url;
     }))
-
+    let getChannel_TextRoom =() =>(computed(()=>{
+        return channel.channel_TextRoom;
+    }))
+    let getChannel_VoiceRoom =() =>(computed(()=>{
+        return channel.channel_VoiceRoom;
+    }))
     function createRoomInChannel(props){
         if (props.room_name === '') {
             // eslint-disable-next-line no-undef
@@ -39,6 +46,8 @@ export const useChannelStore = defineStore("channelStore", () => {
         getChannel_UID,
         getChannel_title,
         getChannel_icon_url,
+        getChannel_TextRoom,
+        getChannel_VoiceRoom,
         createRoomInChannel
     }
 })

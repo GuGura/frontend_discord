@@ -6,7 +6,7 @@ import ChannelSidebarHead from "@/components/main/sidebar/ChannelSidebarHead.vue
 // import {useUserStore} from "@/script/store/userInfo";
 import {useChannelStore} from "@/script/store/channel";
 import {reactive} from "vue";
-// import ChannelSidebarHead from "@/components/mainpage/channel/ChannelSidebarHead.vue";
+import RoomList from "@/components/main/channel/RoomList.vue";
 // import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
 
 // const channelListStore = useChannelListStore();
@@ -16,6 +16,24 @@ const channelInfo = reactive({
   channel_title: channelStore.getChannel_title(),
   channel_UID: channelStore.getChannel_UID(),
   channel_icon_url: channelStore.getChannel_icon_url(),
+  channel_TextRoom: [
+    {
+      room_name: 'hello'
+    },
+    {
+      room_name: '헬로헬로'
+    }
+  ],
+  //channelStore.getChannel_TextRoom(),
+  channel_VoiceRoom: [
+    {
+      room_name: 'hello'
+    },
+    {
+      room_name: '헬로헬로'
+    }
+  ],
+      //channelStore.getChannel_VoiceRoom()
 })
 // const roomInfo = reactive({
 //   name: '',
@@ -67,60 +85,22 @@ const channelInfo = reactive({
 
     <div id="side_content_info">
       <div id="chatRooms">
-
-        <div class="chatRoom">
-
-          <div class="roomName">
-            <div>채팅</div>
-          </div>
-
-          <ul class="btnRooms">
-<!--            <li class="btnRoom" v-for="item in textChatRooms" :key="item.roomId"-->
-<!--                v-on:click="enterRoom(item.roomId, item.name)">-->
-<!--              <div>-->
-<!--                <img src="/img/channel/chat.png">-->
-<!--              </div>-->
-<!--              <div class="MyMember_Info">-->
-<!--                <div class="MyMember_Name">-->
-<!--                  {{ item.name }}-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </li>-->
-          </ul>
-
+        <div class="roomName">
+          <div>채팅</div>
+          <RoomList
+              v-for="room in channelInfo.channel_TextRoom" :key="room"
+              :channel_room_name="room.room_name"
+              channel_room_type="/img/channel/chat.png"
+          />
         </div>
 
-        <div class="voiceRoom">
-          <div class="roomName">
-            <div>음성 채팅</div>
-          </div>
-
-          <ul class="btnRooms">
-
-<!--            <li class="btnRoom" v-for="item in voiceChatRooms" :key="item.roomId" v-on:click="enterRoom(item.roomId)">-->
-<!--              <div>-->
-<!--                <img src="/img/channel/speak.png">-->
-<!--              </div>-->
-<!--              <div class="MyMember_Info">-->
-<!--                <div class="MyMember_Name">-->
-<!--                  {{ item.name }}-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </li>-->
-<!--            <div>-->
-<!--              <div class="btnRoomMember">-->
-<!--                <div>-->
-<!--                  <img src="/img/channel/userIcon.png">-->
-<!--                </div>-->
-<!--                <div class="MyMember_Info">-->
-<!--                  <div class="MyMember_Name">-->
-<!--                    박재연-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-          </ul>
-
+        <div class="roomName">
+          <div>채팅</div>
+          <RoomList
+              v-for="room in channelInfo.channel_VoiceRoom" :key="room"
+              :channel_room_name="room.room_name"
+              channel_room_type="/img/channel/speak.png"
+          />
         </div>
       </div>
     </div>
@@ -129,12 +109,25 @@ const channelInfo = reactive({
 </template>
 
 <style scoped>
-
-
 /**Add**/
+.roomName {
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+}
 
-img {
-  width: 100%;
+.roomName > div:nth-of-type(1) {
+  color: #949BA4;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 0 5px;
+}
+
+.roomName > div:nth-of-type(1):hover {
+  color: #fff;
+  cursor: pointer;
+  display: flex;
 }
 
 /**  side_contents */
@@ -157,140 +150,5 @@ img {
   flex: 1;
   padding: 0 10px;
   gap: 1px;
-}
-
-#chatRooms {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.chatRoom {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.roomName {
-  display: flex;
-}
-
-.roomName > div:nth-of-type(1) {
-  color: #949BA4;
-  font-size: 13px;
-  font-weight: bold;
-  margin-top: 10px;
-  padding: 0 5px;
-}
-
-.roomName > div:nth-of-type(1):hover {
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-}
-
-.btnRoom {
-  display: flex;
-  height: 30px;
-  gap: 20px;
-  border-radius: 5px;
-  align-items: center;
-  cursor: pointer;
-}
-
-li {
-  margin: 0;
-}
-
-.btnRoom:hover {
-  background: #36373D;
-}
-
-.btnRoom:active {
-  background: #3B3D44;
-}
-
-.btnRoom > div:nth-of-type(1) {
-  display: flex;
-  color: #fff;
-  width: 30px;
-}
-
-.btnRoom > div:nth-of-type(2) {
-  display: flex;
-  font-size: 15px;
-  color: #fff;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btnRoom > div:nth-of-type(1) > img:nth-of-type(1) {
-  padding: 8px;
-}
-
-.btnRooms {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.btnRooms > div:nth-of-type(2) {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
-}
-
-.btnRoomMember {
-  display: flex;
-  height: 30px;
-  gap: 5px;
-  border-radius: 5px;
-  padding: 0px 15px;
-  align-items: center;
-  cursor: pointer;
-  width: 90%;
-}
-
-.btnRoomMember:hover {
-  background: #36373D;
-}
-
-.btnRoomMember:active {
-  background: #3B3D44;
-}
-
-.btnRoomMember > div:nth-of-type(1) {
-  display: flex;
-  color: #fff;
-  width: 40px;
-}
-
-.btnRoomMember > div:nth-of-type(1) > img:nth-of-type(1) {
-  padding: 8px;
-}
-
-.MyMember_Info {
-  display: flex;
-  font-size: 15px;
-  color: #fff;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-input[name=message] {
-  display: flex;
-  width: 70%;
-  height: 70%;
-  margin-left: 30px;
-  padding-left: 15px;
-  background: #383A40;
-  outline: none;
-  border: none;
-  color: #fff;
-  border-radius: 15px;
 }
 </style>
