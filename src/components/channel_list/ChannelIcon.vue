@@ -69,7 +69,8 @@ init()
 <style scoped>
 .channelImage {
   background-position: center;
-  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .img {

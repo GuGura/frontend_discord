@@ -16,24 +16,8 @@ const channelInfo = reactive({
   channel_title: channelStore.getChannel_title(),
   channel_UID: channelStore.getChannel_UID(),
   channel_icon_url: channelStore.getChannel_icon_url(),
-  channel_TextRoom: [
-    {
-      room_name: 'hello'
-    },
-    {
-      room_name: '헬로헬로'
-    }
-  ],
-  //channelStore.getChannel_TextRoom(),
-  channel_VoiceRoom: [
-    {
-      room_name: 'hello'
-    },
-    {
-      room_name: '헬로헬로'
-    }
-  ],
-      //channelStore.getChannel_VoiceRoom()
+  channel_TextRoom: channelStore.getChannel_TextRoom(),
+  channel_VoiceRoom: channelStore.getChannel_VoiceRoom()
 })
 // const roomInfo = reactive({
 //   name: '',
@@ -73,6 +57,8 @@ const channelInfo = reactive({
 // );
 //channelStore.channelInfo.channel_title
 //channelStore.channelInfo.channel_invite_code
+
+
 </script>
 
 <template>
@@ -90,7 +76,9 @@ const channelInfo = reactive({
           <RoomList
               v-for="room in channelInfo.channel_TextRoom" :key="room"
               :channel_room_name="room.room_name"
-              channel_room_type="/img/channel/chat.png"
+              channel_room_img="/img/channel/chat.png"
+              :channel_room_type="room.room_type"
+              :channel_room_uid="room.room_uid"
           />
         </div>
 
@@ -99,7 +87,8 @@ const channelInfo = reactive({
           <RoomList
               v-for="room in channelInfo.channel_VoiceRoom" :key="room"
               :channel_room_name="room.room_name"
-              channel_room_type="/img/channel/speak.png"
+              channel_room_img="/img/channel/speak.png"
+              :channel_room_type="room.room_type"
           />
         </div>
       </div>

@@ -21,6 +21,13 @@ const routes = [
         meta: {isJwtExist: true},
         props: true
     },
+    {
+        path: '/channel/:type/:roomUID',
+        name: 'chatRoom',
+        component: () => import(/*webpackChunkName: "main", webpackPrefetch: true */ "@/Page/Main.vue"),
+        meta: {isJwtExist: true},
+        props: true
+    },
 
 ]
 

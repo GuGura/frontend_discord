@@ -28,15 +28,21 @@ function createServer() {
     modalStore.open('loading')
     RestApi.post("/channel/create", createChannel)
         .then(({data}) => {
-          const result = data.data.channel_UID
-          router.push(`/channel/${result}`)
-          console.log(data.data)
+          console.log(data)
+          const channel_UID = data.data.channel.channel_UID
+          const channel = data.data.channel;
+          const initRoomUID = data.data.textRoom.room_uid;
+          router.push(`/channel/${channel_UID}/${initRoomUID}`)
           modalStore.terminate('loading')
-          channelListStore.updateBtn(data.data)
+          channelListStore.updateBtn(channel)
+          channelStore.channel.channel_UID = channel.channel_UID
+          channelStore.channel.channel_title = channel.channel_title
+          channelStore.channel.channel_icon_url = channel.channel_icon_url
 
-          channelStore.channel.channel_UID = data.data.channel_UID
-          channelStore.channel.channel_title = data.data.channel_title
-          channelStore.channel.channel_icon_url = data.data.channel_icon_url
+          channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
+          channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_TextRoom.length)
+          channelStore.channel.channel_TextRoom.push(data.data.textRoom)
+          channelStore.channel.channel_VoiceRoom.push(data.data.voiceRoom)
           // createRoom(localStorage.getItem('newChannelUID'), props);
         })
         .catch(err => {
@@ -55,13 +61,26 @@ async function attendChannel() {
   console.log("channelCode.channelCode: " + channelCode.channelCode)
   await RestApi.get(`/channel/attend/${channelCode.channelCode}`)
       .then(({data}) => {
-        channelListStore.updateBtn(data.data)
+        console.log(data)
+        const channel = data.data.channel;
+        const channelUID = data.data.channel.channel_UID
+        const initRoomUID = data.data.textRoom[0].room_uid;
+        channelListStore.updateBtn(channel)
         exitModal();
-        localStorage.setItem('selectChannel', data.data.channel_title)
-        router.push(`/channel/${data.data.channel_UID}`)
-        channelStore.channel.channel_UID = data.data.channel_UID
-        channelStore.channel.channel_title = data.data.channel_title
-        channelStore.channel.channel_icon_url = data.data.channel_icon_url
+        localStorage.setItem('selectChannel',channel.channel_title)
+        router.push(`/channel/${channelUID}/${initRoomUID}`)
+        channelStore.channel.channel_UID = channel.channel_UID
+        channelStore.channel.channel_title = channel.channel_title
+        channelStore.channel.channel_icon_url = channel.channel_icon_url
+
+        channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
+        channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_TextRoom.length)
+        data.data.textRoom.forEach(room=>{
+          channelStore.channel.channel_TextRoom.push(room)
+        })
+        data.data.voiceRoom.forEach(room=>{
+          channelStore.channel.channel_VoiceRoom.push(room)
+        })
       }).catch((err) => {
         console.log(err.response.data.message)
         channelCode.result = "-" + err.response.data.message;
@@ -197,7 +216,8 @@ function redirectPublic() {
 .IconURL {
   border-radius: 50%;
   background-position: center;
-  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #container {
