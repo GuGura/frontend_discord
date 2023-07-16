@@ -37,7 +37,13 @@ export const useChannelStore = defineStore("channelStore", () => {
         }
         RestApi.post('/chatRoom/create', props)
             .then(({data}) => {
-                console.log(data)
+                const channel = data.data;
+                if (channel.room_type === 'Text'){
+                    this.channel.channel_TextRoom.splice(0,0, channel)
+                    router.push(`/channel/${props.channel_UID}/${channel.room_uid}`).then()
+                }
+                else if(channel.room_type === 'Voice')
+                    this.channel.channel_TextRoom.splice(0, 0, channel)
             })
             .catch(err => {
                 console.log(err)
@@ -46,18 +52,19 @@ export const useChannelStore = defineStore("channelStore", () => {
 
     const router = useRouter()
 
-    function init(channelUID) {
+    async function init(channelUID) {
+        console.log("channelUID::")
         if (channelUID === undefined)
             channelUID = useChannelListStore().getPathEndPoint
-        channel.channel_TextRoom.splice(0, channel.channel_TextRoom.length)
-        channel.channel_VoiceRoom.splice(0, channel.channel_VoiceRoom.length)
-        RestApi.post(`/chatRoom/${channelUID}`)
+        this.channel.channel_TextRoom.splice(0, channel.channel_TextRoom.length)
+        this.channel.channel_VoiceRoom.splice(0, channel.channel_VoiceRoom.length)
+        await RestApi.post(`/chatRoom/${channelUID}`)
             .then(({data}) => {
                 data.data.textRoom.forEach(room => {
-                    channel.channel_TextRoom.push(room)
+                    this.channel.channel_TextRoom.push(room)
                 })
                 data.data.voiceRoom.forEach(room => {
-                    channel.channel_VoiceRoom.push(room)
+                    this.channel.channel_VoiceRoom.push(room)
                 })
                 if (router.currentRoute.value.path.split('/')[3] === undefined)
                     router.push(`/channel/${channelUID}/${channel.channel_TextRoom[0].room_uid}`).then(r => console.log(r))

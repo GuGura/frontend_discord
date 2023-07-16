@@ -5,6 +5,7 @@ import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
 import RestApi from "@/script/axios/jwt/RestApi";
 import CreateRoomModal from "@/components/modal/CreateRoomModal.vue";
+import {useChannelStore} from "@/script/store/channel";
 
 const props = defineProps({
   channel_title: String,
@@ -12,7 +13,7 @@ const props = defineProps({
   channel_icon_url: String,
 });
 const modalStore = useModalStore();
-
+const channelStore = useChannelStore();
 function btnCreateRoom() {
   modalStore.openClose('RoomToggle')
   modalStore.open('CreateRoom')
@@ -46,6 +47,8 @@ function leaveChannel() {
     if (result.isConfirmed) {
       router.push('/channel/lobby')
       useChannelListStore().leaveChannel()
+      channelStore.channel.channel_TextRoom.splice(0, channelStore.channel.channel_TextRoom.length)
+      channelStore.channel.channel_VoiceRoom.splice(0, channelStore.channel.channel_VoiceRoom.length)
       modalStore.openClose('RoomToggle')
       // eslint-disable-next-line no-undef
       Swal.fire(

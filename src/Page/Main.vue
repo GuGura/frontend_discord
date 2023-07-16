@@ -10,16 +10,18 @@ import {useFriendStore} from "@/script/store/friend";
 import Lobby from "@/components/main/lobby/Lobby.vue";
 
 import Channel from "@/components/main/channel/Channel.vue";
+import {useChannelStore} from "@/script/store/channel";
 
 const modalStore = useModalStore();
-const channelStore = useChannelListStore();
+const channelListStore = useChannelListStore();
+const channelStore = useChannelStore();
 const userStore = useUserStore();
 const friendStore = useFriendStore();
 const route = useRouter()
 
 
 watch(route.currentRoute, (to,form) => {
-  const channel_type = channelStore.getPathEndPoint;
+  const channel_type = channelListStore.getPathEndPoint;
   if (to.path !== form.path){
     switch (channel_type){
       case 'lobby':
@@ -27,16 +29,14 @@ watch(route.currentRoute, (to,form) => {
       case 'public':
         break;
       default:
+        channelStore.init(channel_type)
         break;
     }
   }
 })
-function init(){
 
-}
-init()
 onMounted(()=>{
-  channelStore.initBtn()
+  channelListStore.initBtn()
   userStore.updateMyInfo();
   friendStore.initFriendList();
 })

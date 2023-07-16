@@ -5,7 +5,7 @@ import ChannelSidebarHead from "@/components/main/sidebar/ChannelSidebarHead.vue
 // import {useChannelListStore} from "@/script/store/channel_list";
 // import {useUserStore} from "@/script/store/userInfo";
 import {useChannelStore} from "@/script/store/channel";
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import RoomList from "@/components/main/channel/RoomList.vue";
 
 // import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
@@ -54,8 +54,10 @@ const channelInfo = reactive({
 // );
 //channelStore.channelInfo.channel_title
 //channelStore.channelInfo.channel_invite_code
+onMounted(()=>{
+  channelStore.init();
+})
 
-channelStore.init()
 </script>
 
 <template>
