@@ -40,7 +40,7 @@ function createServer() {
           channelStore.channel.channel_icon_url = channel.channel_icon_url
 
           channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
-          channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_TextRoom.length)
+          channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_VoiceRoom.length)
           channelStore.channel.channel_TextRoom.push(data.data.textRoom)
           channelStore.channel.channel_VoiceRoom.push(data.data.voiceRoom)
           // createRoom(localStorage.getItem('newChannelUID'), props);
@@ -74,7 +74,7 @@ async function attendChannel() {
         channelStore.channel.channel_icon_url = channel.channel_icon_url
 
         channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
-        channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_TextRoom.length)
+        channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_VoiceRoom.length)
         data.data.textRoom.forEach(room=>{
           channelStore.channel.channel_TextRoom.push(room)
         })
