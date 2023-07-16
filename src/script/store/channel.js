@@ -52,13 +52,13 @@ export const useChannelStore = defineStore("channelStore", () => {
 
     const router = useRouter()
 
-    async function init(channelUID) {
+    function init(channelUID) {
         console.log("channelUID::")
         if (channelUID === undefined)
             channelUID = useChannelListStore().getPathEndPoint
         this.channel.channel_TextRoom.splice(0, channel.channel_TextRoom.length)
         this.channel.channel_VoiceRoom.splice(0, channel.channel_VoiceRoom.length)
-        await RestApi.post(`/chatRoom/${channelUID}`)
+        RestApi.post(`/chatRoom/${channelUID}`)
             .then(({data}) => {
                 data.data.textRoom.forEach(room => {
                     this.channel.channel_TextRoom.push(room)
