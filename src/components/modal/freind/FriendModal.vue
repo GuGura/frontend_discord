@@ -19,7 +19,7 @@ function closeM() {
 
 function initRequestUser() {
   friendStore.RequestUser.splice(0,friendStore.RequestUser.length)
-  RestApi.get(`/friend/requestUser`)
+  RestApi.post(`/friend/requestUser`)
       .then(({data}) => {
         console.log("initRequestUser")
         data.data.forEach(user => {

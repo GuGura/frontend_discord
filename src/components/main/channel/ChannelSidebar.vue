@@ -83,7 +83,7 @@ const channelInfo = reactive({
         </div>
 
         <div class="roomName">
-          <div>채팅</div>
+          <div>음성</div>
           <RoomList
               v-for="room in channelInfo.channel_VoiceRoom" :key="room"
               :channel_room_name="room.room_name"

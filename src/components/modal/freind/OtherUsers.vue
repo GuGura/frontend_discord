@@ -17,7 +17,7 @@ console.log(propsOtherUsers.friendInfo.user_id)
       .catch(err=>{
         console.log(err)
         // eslint-disable-next-line no-undef
-        Swal.fire(err.response.data)
+        Swal.fire(err.response.data.message)
       })
 }
 </script>
@@ -25,7 +25,7 @@ console.log(propsOtherUsers.friendInfo.user_id)
 <template>
   <div class="btnList" >
     <div style="width: 35px;">
-        <img class="rounded" v-if="propsOtherUsers.friendInfo.icon_url === null" src="/img/channelList/bright_icon.png">
+        <img class="rounded" v-if="propsOtherUsers.friendInfo.icon_url === null ||propsOtherUsers.friendInfo.icon_url === ''" src="/img/channelList/bright_icon.png">
         <img class="rounded" :src="propsOtherUsers.friendInfo.icon_url" v-else>
     </div>
     <div class="MyMember_Info">
