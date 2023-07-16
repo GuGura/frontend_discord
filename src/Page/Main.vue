@@ -19,10 +19,8 @@ const route = useRouter()
 
 
 watch(route.currentRoute, (to,form) => {
-  console.log(to.path)
+  const channel_type = channelStore.getPathEndPoint;
   if (to.path !== form.path){
-    const channel_type = 1;
-    console.log(typeof channel_type)
     switch (channel_type){
       case 'lobby':
         break;

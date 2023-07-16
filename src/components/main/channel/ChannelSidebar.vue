@@ -7,6 +7,7 @@ import ChannelSidebarHead from "@/components/main/sidebar/ChannelSidebarHead.vue
 import {useChannelStore} from "@/script/store/channel";
 import {reactive} from "vue";
 import RoomList from "@/components/main/channel/RoomList.vue";
+
 // import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
 
 // const channelListStore = useChannelListStore();
@@ -38,13 +39,9 @@ const channelInfo = reactive({
 //   }
 // });
 //
-// watch(
-//     async () => {
-//       if (updateChannelId.value !== "lobby") {
-//         await findAllRoom(updateChannelId.value, textChatRooms, voiceChatRooms);
-//       }
-//     },
-// );
+// watch(()=> channelInfo.channel_UID,async ()=>{
+//   console.log(channelInfo.channel_UID)
+// });
 // watch(() => updateChannelId.value,
 //     async () => {
 //       if (updateChannelId.value !== "lobby") {
@@ -58,7 +55,7 @@ const channelInfo = reactive({
 //channelStore.channelInfo.channel_title
 //channelStore.channelInfo.channel_invite_code
 
-
+channelStore.init()
 </script>
 
 <template>

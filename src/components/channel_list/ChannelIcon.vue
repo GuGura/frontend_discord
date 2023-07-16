@@ -31,6 +31,7 @@ function btnClick() {
       channelStore.channel.channel_title = props.channel_title
       channelStore.channel.channel_UID = props.channel_UID
       channelStore.channel.channel_icon_url = props.channel_icon_url
+      channelStore.init(props.channel_UID)
     }
   }
 }
@@ -42,6 +43,7 @@ function init() {
     channelStore.channel.channel_icon_url = props.channel_icon_url
   }
 }
+
 init()
 </script>
 

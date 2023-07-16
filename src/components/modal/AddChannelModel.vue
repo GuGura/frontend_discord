@@ -41,6 +41,7 @@ function createServer() {
 
           channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
           channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_VoiceRoom.length)
+          console.log(typeof data.data.textRoom)
           channelStore.channel.channel_TextRoom.push(data.data.textRoom)
           channelStore.channel.channel_VoiceRoom.push(data.data.voiceRoom)
           // createRoom(localStorage.getItem('newChannelUID'), props);

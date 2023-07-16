@@ -26,7 +26,6 @@ export const useChannelListStore = defineStore("channelListStore", () => {
     const router = useRouter();
 
     async function initBtn() {
-        console.log("initBtn")
         await RestApi.post("/myInfo/channelList")
             .then(({data}) => {
                 const resultArray = data.data;
@@ -40,8 +39,7 @@ export const useChannelListStore = defineStore("channelListStore", () => {
     async function leaveChannel() {
         let channelUID = router.currentRoute.value.path.split('/')[2]
         RestApi.delete(`/channel/leaveChannel/${channelUID}`)
-            .then(res => {
-                console.log(res)
+            .then(() => {
                 buttons.forEach((r, index) => {
                     if (r.channel_UID === Number(channelUID)) {
                         buttons.splice(index, 1)
