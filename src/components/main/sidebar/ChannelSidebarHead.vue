@@ -32,8 +32,7 @@ function checkInviteCode() {
 
   modalStore.openClose('RoomToggle')
 }
-
-function leaveChannel() {
+ function leaveChannel() {
   // eslint-disable-next-line no-undef
   Swal.fire({
     title: '채널 퇴장',
@@ -78,7 +77,7 @@ function leaveChannel() {
   <div id="toggle" v-if="modalStore.modal.RoomToggle ===true" :class="(props.channel_icon_url!== null)? 'toggle100':'toggle50'">
     <div @click="checkInviteCode()">초대코드 확인</div>
     <div @click="btnCreateRoom()">방 생성</div>
-    <div @click="leaveChannel()">서버 나가기</div>   <!-- 유저 or 매니저-->
+    <div @click="leaveChannel()">채널 나가기</div>   <!-- 유저 or 매니저-->
   </div>
   <CreateRoomModal v-if="modalStore.modal.CreateRoom === true"/>
 </template>

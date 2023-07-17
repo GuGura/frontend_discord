@@ -5,8 +5,10 @@ import ChannelSidebarHead from "@/components/main/sidebar/ChannelSidebarHead.vue
 // import {useChannelListStore} from "@/script/store/channel_list";
 // import {useUserStore} from "@/script/store/userInfo";
 import {useChannelStore} from "@/script/store/channel";
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 import RoomList from "@/components/main/channel/RoomList.vue";
+import {useRouter} from "vue-router";
+import {useChannelListStore} from "@/script/store/channel_list";
 
 // import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
 
@@ -52,9 +54,28 @@ const channelInfo = reactive({
 //       }
 //     },
 // );
+const router = useRouter()
+const channelListStore = useChannelListStore();
 //channelStore.channelInfo.channel_title
 //channelStore.channelInfo.channel_invite_code
-onMounted(()=>{
+watch(router.currentRoute, (to, form) => {
+  let channel_type
+  if (to.path !== form.path)
+    channel_type = channelListStore.getPathEndPoint;
+  switch (channel_type) {
+    case 'lobby':
+      break;
+    case 'public':
+      break;
+    case 'friend':
+      break;
+    default:
+      console.log("watch::init")
+      channelStore.init(channel_type)
+  }
+})
+onMounted(() => {
+  console.log("onMounted::init")
   channelStore.init();
 })
 

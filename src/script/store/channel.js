@@ -11,7 +11,8 @@ export const useChannelStore = defineStore("channelStore", () => {
         channel_title: '',
         channel_icon_url: '',
         channel_TextRoom: [],
-        channel_VoiceRoom: []
+        channel_VoiceRoom: [],
+        channel_roomName: '',
     })
     let getChannel_UID = () => (computed(() => {
         return channel.channel_UID;
@@ -28,6 +29,9 @@ export const useChannelStore = defineStore("channelStore", () => {
     let getChannel_VoiceRoom = () => (computed(() => {
         return channel.channel_VoiceRoom;
     }))
+    let getChannel_RoomName = () => (computed(() => {
+        return channel.channel_roomName;
+    }))
 
     function createRoomInChannel(props) {
         if (props.room_name === '') {
@@ -38,11 +42,10 @@ export const useChannelStore = defineStore("channelStore", () => {
         RestApi.post('/chatRoom/create', props)
             .then(({data}) => {
                 const channel = data.data;
-                if (channel.room_type === 'Text'){
-                    this.channel.channel_TextRoom.splice(0,0, channel)
+                if (channel.room_type === 'Text') {
+                    this.channel.channel_TextRoom.splice(0, 0, channel)
                     router.push(`/channel/${props.channel_UID}/${channel.room_uid}`).then()
-                }
-                else if(channel.room_type === 'Voice')
+                } else if (channel.room_type === 'Voice')
                     this.channel.channel_TextRoom.splice(0, 0, channel)
             })
             .catch(err => {
@@ -52,27 +55,30 @@ export const useChannelStore = defineStore("channelStore", () => {
 
     const router = useRouter()
 
-    function init(channelUID) {
-        console.log("channelUID::")
-        if (channelUID === undefined)
-            channelUID = useChannelListStore().getPathEndPoint
-        this.channel.channel_TextRoom.splice(0, channel.channel_TextRoom.length)
-        this.channel.channel_VoiceRoom.splice(0, channel.channel_VoiceRoom.length)
-        RestApi.post(`/chatRoom/${channelUID}`)
+    async function init(channelUID) {
+        console.log("1: ",channelUID)
+        channelUID = useChannelListStore().getPathEndPoint
+        console.log("2: ",channelUID)
+        await RestApi.post(`/chatRoom/${channelUID}`)
             .then(({data}) => {
+                this.channel.channel_TextRoom.splice(0, channel.channel_TextRoom.length)
+                this.channel.channel_VoiceRoom.splice(0, channel.channel_VoiceRoom.length)
                 data.data.textRoom.forEach(room => {
                     this.channel.channel_TextRoom.push(room)
                 })
                 data.data.voiceRoom.forEach(room => {
                     this.channel.channel_VoiceRoom.push(room)
                 })
-                if (router.currentRoute.value.path.split('/')[3] === undefined)
-                    router.push(`/channel/${channelUID}/${channel.channel_TextRoom[0].room_uid}`).then(r => console.log(r))
+
 
             })
             .catch(err => {
                 console.log(err)
             })
+        if (router.currentRoute.value.path.split('/')[3] === undefined) {
+            this.channel.channel_roomName = this.channel.channel_TextRoom[0].room_name;
+            router.push(`/channel/${channelUID}/${channel.channel_TextRoom[0].room_uid}`).then(r => console.log(r))
+        }
     }
 
     return {
@@ -83,6 +89,7 @@ export const useChannelStore = defineStore("channelStore", () => {
         getChannel_TextRoom,
         getChannel_VoiceRoom,
         createRoomInChannel,
+        getChannel_RoomName,
         init,
     }
 })

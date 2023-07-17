@@ -34,8 +34,7 @@ export const useChannelListStore = defineStore("channelListStore", () => {
                 })
             })
     }
-
-//---------------------------------------------------------------
+    //---------------------------------------------------------------
     async function leaveChannel() {
         let channelUID = router.currentRoute.value.path.split('/')[2]
         RestApi.delete(`/channel/leaveChannel/${channelUID}`)

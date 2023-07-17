@@ -6,7 +6,6 @@ import router from "@/script/routes/router";
 import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
 import {useChannelStore} from "@/script/store/channel";
-//import {createRoom} from "../../../script/chatOperations";
 
 const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
@@ -41,10 +40,6 @@ function createServer() {
 
           channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
           channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_VoiceRoom.length)
-          console.log(typeof data.data.textRoom)
-          channelStore.channel.channel_TextRoom.push(data.data.textRoom)
-          channelStore.channel.channel_VoiceRoom.push(data.data.voiceRoom)
-          // createRoom(localStorage.getItem('newChannelUID'), props);
         })
         .catch(err => {
           modalStore.terminate('loading')
@@ -76,12 +71,6 @@ async function attendChannel() {
 
         channelStore.channel.channel_TextRoom.splice(0,channelStore.channel.channel_TextRoom.length)
         channelStore.channel.channel_VoiceRoom.splice(0,channelStore.channel.channel_VoiceRoom.length)
-        data.data.textRoom.forEach(room=>{
-          channelStore.channel.channel_TextRoom.push(room)
-        })
-        data.data.voiceRoom.forEach(room=>{
-          channelStore.channel.channel_VoiceRoom.push(room)
-        })
       }).catch((err) => {
         console.log(err.response.data.message)
         channelCode.result = "-" + err.response.data.message;

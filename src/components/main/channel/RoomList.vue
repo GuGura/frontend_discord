@@ -1,6 +1,7 @@
 <script setup>
 import {defineProps} from 'vue'
 import {useRouter} from "vue-router";
+import {useChannelStore} from "@/script/store/channel";
 
 const props = defineProps({
   channel_room_name: String,
@@ -9,9 +10,14 @@ const props = defineProps({
   channel_room_type: String,
 })
 const router = useRouter();
-function enterRoom(){
+const channelStore = useChannelStore();
+function enterRoom() {
   const channelUID = router.currentRoute.value.path.split('/')[2]
-  router.push(`/channel/${channelUID}/${props.channel_room_uid}`)
+  if (props.channel_room_type !== 'Voice'){
+    router.push(`/channel/${channelUID}/${props.channel_room_uid}`)
+    channelStore.channel.channel_roomName = props.channel_room_name;
+  }
+
 }
 
 </script>
@@ -59,6 +65,7 @@ img {
 .btnRoom:active {
   background: #3B3D44;
 }
+
 .btnRoom > div:nth-of-type(1) > img:nth-of-type(1) {
   padding: 8px;
 }

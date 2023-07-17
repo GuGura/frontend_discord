@@ -1,7 +1,6 @@
 <script setup>
 import {useModalStore} from "@/script/store/modal";
 import {reactive} from "vue";
-//import {createRoom, enterRoom} from '/script/chatOperations';
 import {useChannelListStore} from "@/script/store/channel_list";
 import {useChannelStore} from "@/script/store/channel";
 
@@ -21,10 +20,6 @@ function closeModal() {
 
 function createRoomInChannel() {
   channelStore.createRoomInChannel(props)
-  //   await createRoom(updateChannelId.value, props)
-  //       .then(data=>{
-  //         enterRoom(props.roomId, props.name);
-  //       })
   closeModal();
   props.room_type = 'Text'
   props.room_name = ''
@@ -45,7 +40,7 @@ function createRoomInChannel() {
     </div>
 
     <div id="type">
-      <div style="padding: 5px">채널 유형</div>
+      <div style="padding: 5px">방 유형</div>
       <label class="channelTypeBox">
         <div style="height: 20px;display: flex">
           <img src="/img/channel/chat.png">
@@ -76,7 +71,7 @@ function createRoomInChannel() {
     </div>
 
     <div id="channel_title">
-      <div>채널이름</div>
+      <div>방이름</div>
       <div id="roomNameBox">
         <div style="display: flex;height: 15px">
           <img src="/img/channel/chat.png" v-if="props.room_type === 'Text'">
@@ -88,7 +83,7 @@ function createRoomInChannel() {
 
     <div id="footer">
       <div @click="closeModal">취소</div>
-      <button @click="createRoomInChannel">채널 만들기</button>
+      <button @click="createRoomInChannel">방 만들기</button>
     </div>
   </div>
 </template>
