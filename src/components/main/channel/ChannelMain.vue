@@ -1,6 +1,5 @@
 <script setup>
 import {reactive, ref} from "vue";
-//import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
 import ChatBox from "@/components/main/channel/ChatBox.vue";
 import {useUserStore} from "@/script/store/userInfo";
 import {useSocketStore} from "@/script/operations/socket";

@@ -3,15 +3,17 @@ import Stomp from 'webstomp-client';
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
 import { useUserStore } from "../store/userInfo";
-
+import { useChatStore } from "@/script/operations/chat";
 //소켓에 연결하는 기능
 export const useSocketStore = defineStore("socketStore", () => {
 
     // 헤더 통과용 Email
-    const userStore= useUserStore();
+    const userStore = useUserStore();
     const updateUserEmail = computed(() => {
         return userStore.user.username;
     });
+    // 채팅 관련 Store
+    const chatStore = useChatStore();
 
     //소켓 연결
     let ws = reactive(null);    // WebSocket 변수
@@ -38,7 +40,15 @@ export const useSocketStore = defineStore("socketStore", () => {
     // 이전 방 저장용
     let subscription;
     //구독 하는 기능
-    function subscribeToRoom(roomId) {
+    async function subscribeToRoom(roomId) {
+        await chatStore.clearMessageList();
+        await chatStore.dbMessageList(roomId)
+            .then((response) => {
+                console.log("111111111111111  : " , response);
+                response.data.forEach(message => {
+                    receiveMessage(message);
+                });
+            });
         subscription = ws.subscribe(
             "/sub/chat/room/" + roomId,
             (message) => {
@@ -71,12 +81,15 @@ export const useSocketStore = defineStore("socketStore", () => {
         const msg = {
             type: "TALK",
             roomId: roomId,
+            userName: updateUserEmail.value,
             sender: sender,
             message: message,
             sendDate: new Date(),
         };
         ws.send("/pub/chat/message", JSON.stringify(msg), {});
     }
+
+
 
 
     return {
