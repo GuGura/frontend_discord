@@ -7,6 +7,7 @@ import {useModalStore} from "@/script/store/modal";
 import {useChannelListStore} from "@/script/store/channel_list";
 import {useUserStore} from "@/script/store/userInfo";
 import {useFriendStore} from "@/script/store/friend";
+import {useSocketStore} from "@/script/operations/socket";
 import Lobby from "@/components/main/lobby/Lobby.vue";
 
 import Channel from "@/components/main/channel/Channel.vue";
@@ -16,15 +17,17 @@ const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
 const userStore = useUserStore();
 const friendStore = useFriendStore();
+const socketStore = useSocketStore();
 const route = useRouter()
 
 
 
-onMounted(() => {
-  channelListStore.initBtn()
-  userStore.updateMyInfo();
+onMounted(async () => {
+  await channelListStore.initBtn();
+  await userStore.updateMyInfo();
   friendStore.initFriendList();
-})
+  socketStore.connectSocket();
+});
 
 
 </script>

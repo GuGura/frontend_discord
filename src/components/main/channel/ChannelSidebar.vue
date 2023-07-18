@@ -9,6 +9,7 @@ import {onMounted, reactive, watch} from "vue";
 import RoomList from "@/components/main/channel/RoomList.vue";
 import {useRouter} from "vue-router";
 import {useChannelListStore} from "@/script/store/channel_list";
+import {useSocketStore} from "@/script/operations/socket";
 
 // import {createRoom, enterRoom, findAllRoom} from '/script/chatOperations';
 
@@ -22,6 +23,7 @@ const channelInfo = reactive({
   channel_TextRoom: channelStore.getChannel_TextRoom(),
   channel_VoiceRoom: channelStore.getChannel_VoiceRoom()
 })
+const socketStore = useSocketStore();
 // const roomInfo = reactive({
 //   name: '',
 //   room_type: false,
@@ -58,10 +60,19 @@ const router = useRouter()
 const channelListStore = useChannelListStore();
 //channelStore.channelInfo.channel_title
 //channelStore.channelInfo.channel_invite_code
-watch(router.currentRoute, (to, form) => {
+
+watch(router.currentRoute, (to, from) => {
   let channel_type
-  if (to.path !== form.path)
+  const toLastPathComponent = to.path.split('/').pop();
+  const fromLastPathComponent = from.path.split('/').pop();
+
+  if (to.path !== from.path)
+    console.log("from path :  " + fromLastPathComponent);
+    console.log("to path   :  " + toLastPathComponent);
     channel_type = channelListStore.getPathEndPoint;
+    socketStore.unSubscribeToRoom(fromLastPathComponent);
+    socketStore.subscribeToRoom(toLastPathComponent);
+    channelStore.channel.channel_roomUID = toLastPathComponent;
   switch (channel_type) {
     case 'lobby':
       break;

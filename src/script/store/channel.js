@@ -13,6 +13,7 @@ export const useChannelStore = defineStore("channelStore", () => {
         channel_TextRoom: [],
         channel_VoiceRoom: [],
         channel_roomName: '',
+        channel_roomUID: '',
     })
     let getChannel_UID = () => (computed(() => {
         return channel.channel_UID;
@@ -31,6 +32,9 @@ export const useChannelStore = defineStore("channelStore", () => {
     }))
     let getChannel_RoomName = () => (computed(() => {
         return channel.channel_roomName;
+    }))
+    let getChannel_RoomUID = () => (computed(()=>{
+        return channel.channel_roomUID;
     }))
 
     function createRoomInChannel(props) {
@@ -90,6 +94,7 @@ export const useChannelStore = defineStore("channelStore", () => {
         getChannel_VoiceRoom,
         createRoomInChannel,
         getChannel_RoomName,
+        getChannel_RoomUID,
         init,
     }
 })

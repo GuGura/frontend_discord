@@ -1,11 +1,14 @@
 <script setup>
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 //import ChatBox from "@/components/mainpage/channel/ChatBox.vue";
+import ChatBox from "@/components/main/channel/ChatBox.vue";
 import {useUserStore} from "@/script/store/userInfo";
-//import {useSocketStore} from '/script/socketOperations';
+import {useSocketStore} from "@/script/operations/socket";
 //import {useRouter} from "vue-router";
 import {useChannelStore} from "@/script/store/channel";
 //import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
+
+const socketStore = useSocketStore();
 const userStore = useUserStore();
 const channelStore = useChannelStore();
 //const route = useRouter()
@@ -99,6 +102,17 @@ const chatMainInfo = reactive({
 // },
 
 // });
+const inputMessage = ref("");
+
+function sendMessage() {
+  const roomId = channelStore.channel.channel_roomUID;
+  const sender = userStore.getNickname().value;
+  const message = inputMessage.value;
+
+  socketStore.sendMessage(roomId, sender, message);
+  inputMessage.value = '';
+}
+
 </script>
 
 <template>
@@ -121,17 +135,18 @@ const chatMainInfo = reactive({
           <div class="scroll box2" ref="chatScroll">
             <!--            <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">-->
             <!--              <ChatBox :messages="message"/>-->
+            <div class="Box" v-for="(messages,idx) in socketStore.messageList" :key="idx">
+              <ChatBox :messages="messages"/>
+            </div>
           </div>
-          <!--            <div class="Box" v-for="(messages,idx) in messageList" :key="idx">-->
-          <!--              <ChatBox :messages="messages"/>-->
         </div>
       </div>
     </div>
 
     <div id="MessageBox">
       <form style="width: 100%;" @submit.prevent>
-        <!--            <input type="text" name="message" placeholder="메세지 보내기"-->
-        <!--                   v-model="inputMessage" @keyup.enter="sendMessage"> -->
+                    <input type="text" name="message" placeholder="메세지 보내기"
+                           v-model="inputMessage" @keyup.enter="sendMessage">
       </form>
     </div>
   </div>
