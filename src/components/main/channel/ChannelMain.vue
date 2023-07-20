@@ -1,19 +1,23 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 import ChatBox from "@/components/main/channel/ChatBox.vue";
 import {useUserStore} from "@/script/store/userInfo";
 import {useSocketStore} from "@/script/operations/socket";
-//import {useRouter} from "vue-router";
+import {useUserListStore} from "@/script/operations/userList";
+import {useRouter} from "vue-router";
 import {useChannelStore} from "@/script/store/channel";
+import ChannelMemberInfo from "@/components/main/channel/ChannelMemberInfo.vue";
 //import ChannelMemberInfo from "@/components/mainpage/channel/ChannelMemberInfo.vue";
 
 const socketStore = useSocketStore();
 const userStore = useUserStore();
 const channelStore = useChannelStore();
+const userListStore = useUserListStore();
 //const route = useRouter()
 const chatMainInfo = reactive({
   nickname: userStore.getNickname(),
   channel_title: channelStore.getChannel_RoomName(),
+  channel_uid: channelStore.getChannel_UID(),
 });
 
 //const socketStore = useSocketStore();
@@ -112,6 +116,33 @@ function sendMessage() {
   inputMessage.value = '';
 }
 
+const router = useRouter()
+
+watch(router.currentRoute, async (to, from) => {
+  if (to.path !== from.path) {
+    await userListStore.clearUserList();
+    const userList = await userListStore.getUserList();
+    const filterUsers = (status) => userList.filter(user => user.channel_uid === chatMainInfo.channel_uid && user.state === status);
+
+    const enterUsers = filterUsers('ENTER');
+    const quitUsers = filterUsers('QUIT');
+
+    enterUsers.forEach(user => {
+      if (!socketStore.channelOnlineUserList.some(onlineUser => onlineUser.nickname === user.nickname)) {
+        socketStore.channelOnlineUserList.push(user);
+      }
+    });
+
+    quitUsers.forEach(user => {
+      if (!socketStore.channelOfflineUserList.some(offlineUser => offlineUser.nickname === user.nickname)) {
+        socketStore.channelOfflineUserList.push(user);
+      }
+    });
+  }
+});
+
+
+
 </script>
 
 <template>
@@ -132,8 +163,6 @@ function sendMessage() {
       <div id="chatMain">
         <div id="chatInfo" ref="chatInfoRef">
           <div class="scroll box2" ref="chatScroll">
-            <!--            <div class="Box" v-for="(message, idx) in chatMessages" :key="`chat-${idx}`">-->
-            <!--              <ChatBox :messages="message"/>-->
             <div class="Box" v-for="(messages,idx) in socketStore.messageList" :key="idx">
               <ChatBox :messages="messages"/>
             </div>
@@ -155,13 +184,13 @@ function sendMessage() {
       <div class="roomMemberInfo">
         <div>온라인</div>
       </div>
-      <!--            <ChannelMemberInfo v-for="(online, idx) in onlineUsers" :key="idx" :name="online.name" />-->
+                  <ChannelMemberInfo v-for="(online, idx) in socketStore.channelOnlineUserList" :key="idx" :name="online.nickname" />
     </div>
     <div id="offline">
       <div class="roomMemberInfo">
         <div>오프라인</div>
       </div>
-      <!--            <ChannelMemberInfo v-for="(offline, idx) in offlineUsers" :key="idx" :name="offline.name" />-->
+                  <ChannelMemberInfo v-for="(offline, idx) in socketStore.channelOfflineUserList" :key="idx" :name="offline.nickname" />
     </div>
   </div>
 </template>

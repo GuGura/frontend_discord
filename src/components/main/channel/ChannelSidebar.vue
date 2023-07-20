@@ -63,14 +63,20 @@ const channelListStore = useChannelListStore();
 
 watch(router.currentRoute, (to, from) => {
   let channel_type
+  let roomId = null; // 이전 값을 저장하는 변수
+
   const toLastPathComponent = to.path.split('/').pop();
   const fromLastPathComponent = from.path.split('/').pop();
 
+  if (fromLastPathComponent.includes('-')) { // UUID가 '-'를 포함하므로 이를 체크합니다.
+    roomId = fromLastPathComponent;
+  }
+
   if (to.path !== from.path)
-    console.log("from path :  " + fromLastPathComponent);
-    console.log("to path   :  " + toLastPathComponent);
+  if (roomId){
+    socketStore.unSubscribeToRoom(roomId);
+  }
     channel_type = channelListStore.getPathEndPoint;
-    socketStore.unSubscribeToRoom(fromLastPathComponent);
     socketStore.subscribeToRoom(toLastPathComponent);
     channelStore.channel.channel_roomUID = toLastPathComponent;
   switch (channel_type) {
@@ -85,6 +91,8 @@ watch(router.currentRoute, (to, from) => {
       channelStore.init(channel_type)
   }
 })
+
+
 onMounted(() => {
   console.log("onMounted::init")
   channelStore.init();

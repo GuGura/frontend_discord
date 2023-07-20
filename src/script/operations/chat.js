@@ -9,7 +9,7 @@ export const useChatStore = defineStore("chatStore", () => {
 
     async function dbMessageList(roomId) {
         const response = await RestApi.get(`/chat/message/list/${roomId}`);
-        return response;
+        return response
     }
 
     async function clearMessageList() {
