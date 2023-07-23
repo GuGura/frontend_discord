@@ -41,6 +41,7 @@ function openModal2() {
           <h2 class="featurette-heading fw-normal lh-1">{{ propsLobby.nickname }} </h2>
           <div class="lead"> {{ propsLobby.description }}</div>
                 <div class="row" style="display: flex;flex: 1;">
+
                     <div class="edit-button col" @click="openModal()" style="width: 150px; padding: 0;">
                         <div class="material-symbols-outlined">manage_accounts</div>
                         <div style="width: 90px;">Settings</div>
@@ -48,6 +49,7 @@ function openModal2() {
                     <div class="edit-button col" @click="openModal2()"  style="width: 150px; padding: 0;">
                         <div class="material-symbols-outlined">edit_note</div>
                         <div style="width: 90px;">Post</div>
+
                     </div>
                 </div>
             </div>

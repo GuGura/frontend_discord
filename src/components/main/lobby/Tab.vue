@@ -1,9 +1,10 @@
 <script>
 
 import Calendar from "@/components/main/lobby/Calendar.vue";
+import PostList from "@/components/main/lobby/PostList.vue";
 
 export default {
-    components: { Calendar},
+    components: {PostList, Calendar},
     data() {
         return {
             calendarKey: 0,
@@ -72,7 +73,7 @@ export default {
 <!--                </div>-->
                 <div v-else-if="index === 2">
                     <div class="content-box">
-                        <!--<PostList/>-->
+                        <PostList/>
                     </div>
                 </div>
 

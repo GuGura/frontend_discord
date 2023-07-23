@@ -163,6 +163,7 @@ initEvents()
     color: white;
     border:none;
     margin-bottom: 10px;
+    border-radius: 5px;
 }
 .card:hover{
     background-color: #2b2d31;
