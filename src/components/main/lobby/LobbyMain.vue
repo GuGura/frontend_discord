@@ -4,6 +4,9 @@ import {defineProps} from 'vue'
 // import Tab from "@/components/main/lobby/components/Tab.vue";
 import UserSettingModal from "@/components/modal/UserSettingModal.vue";
 import {useModalStore} from "@/script/store/modal";
+import WritingPostModal from "@/components/modal/WritingPostModal.vue";
+import Tab from "@/components/main/lobby/Tab.vue";
+import TodaySchedule from "@/components/main/lobby/TodaySchedule.vue";
 // import TodaySchedule from "@/components/mainpage/lobby/TodaySchedule.vue";
 // import WritingContentModal from "@/components/modal/WritingContentModal.vue";
 
@@ -20,7 +23,7 @@ function openModal() {
 }
 
 function openModal2() {
-  modalStore.open('writingContent')
+  modalStore.open('writingPost')
 }
 
 </script>
@@ -32,37 +35,43 @@ function openModal2() {
              v-if="propsLobby.icon_url==='' ">
         <img :src="propsLobby.icon_url" alt="UserIcon" style="width: 100%;height: 100%;border-radius: 5px" class="rounded" v-else>
       </div>
-      <div id="userName" class="">
-        <div class="order-md-2">
+      <div id="userName" class="container">
+        <div style="display: flex;flex: 1;">
+            <div>
           <h2 class="featurette-heading fw-normal lh-1">{{ propsLobby.nickname }} </h2>
           <div class="lead"> {{ propsLobby.description }}</div>
-        </div>
-        <div class="row">
-          <div class="edit-button col-1" @click="openModal()">
-            <span class="material-symbols-outlined">manage_accounts</span>
-            <div style="width: 90px;">Settings</div>
-          </div>
+                <div class="row" style="display: flex;flex: 1;">
+                    <div class="edit-button col" @click="openModal()" style="width: 150px; padding: 0;">
+                        <div class="material-symbols-outlined">manage_accounts</div>
+                        <div style="width: 90px;">Settings</div>
+                    </div>
+                    <div class="edit-button col" @click="openModal2()"  style="width: 150px; padding: 0;">
+                        <div class="material-symbols-outlined">edit_note</div>
+                        <div style="width: 90px;">Post</div>
+                    </div>
+                </div>
+            </div>
 
-          <UserSettingModal
-              :nickname="propsLobby.nickname"
-              :description="propsLobby.description"
-              :icon_url="propsLobby.icon_url"
-              v-if=" modalStore.modal.userSetting=== true"
-          />
-          <div class="writing-button col-1" @click="openModal2()">
-            <span class="material-symbols-outlined">edit_note</span>
-            <div style="width: 90px;">Post</div>
-          </div>
+
         </div>
       </div>
-      <!--            <WritingContentModal v-if="modalStore.modal.writingContent === true"/>-->
+        <UserSettingModal
+                :nickname="propsLobby.nickname"
+                :description="propsLobby.description"
+                :icon_url="propsLobby.icon_url"
+                v-if=" modalStore.modal.userSetting=== true"
+        />
+        <WritingPostModal
+                :nickname="propsLobby.nickname"
+                :icon_url="propsLobby.icon_url"
+                v-if="modalStore.modal.writingPost === true"/>
     </div>
     <div id="main_content_body">
       <div id="main_content1">
-        <!--                <Tab/>-->
+        <Tab/>
       </div>
       <div id="main_content2">
-        <!--                <TodaySchedule/>-->
+        <TodaySchedule/>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ export const useModalStore = defineStore("modalStore",()=>{
         addServer : false,
         attendChannel: false,
         userSetting: false,
-        writingContent: false,
+        writingPost: false,
         RoomToggle: false,
         CreateRoom: false,
         Friend: false,
