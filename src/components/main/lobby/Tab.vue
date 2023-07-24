@@ -2,9 +2,10 @@
 
 import Calendar from "@/components/main/lobby/Calendar.vue";
 import PostList from "@/components/main/lobby/PostList.vue";
+import MyFeed from "@/components/main/lobby/myFeed.vue";
 
 export default {
-    components: {PostList, Calendar},
+    components: {MyFeed, PostList, Calendar},
     data() {
         return {
             calendarKey: 0,
@@ -58,7 +59,7 @@ export default {
             <div v-for="(content, index) in tabContents" :key="index" :class="{'tab-pane': true, 'active': activeTab === index }">
                 <div v-if="index === 0">
                     <div class="content-box">
-                        <!--<myFeed/>-->
+                        <myFeed/>
                     </div>
                 </div>
                 <div v-else-if="index === 1">

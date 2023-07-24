@@ -21,7 +21,9 @@ let postList = reactive({
       is_post_scrapped:'',
       scrapping_id:'',
         original_writer:'',
-        post_owner_name:''
+        post_owner_name:'',
+        is_post_mine:'',
+        is_post_scrapped_int:''
     }
 
   ]
@@ -43,7 +45,6 @@ function morePost() {
   }).then(({data}) => {
       if(data && data.length) {
           for (const item of data) {
-              item.userIcon = "data:image/png;base64,"+item.userIcon
               postList.posts.push(item)
           }
           lastPosting = postList.posts.at(-1).id
@@ -68,7 +69,7 @@ onMounted(() => {
     <div class="Box" v-for="(post,idx) in postList.posts" :key="idx">
       <post :post="post"/>
     </div>
-    <div class="row my-2 mx-auto">
+    <div class="row my-2 mx-auto" style="flex: 1; display: flex; justify-content: center; align-items: center;">
       <button type="button" class="btn btn-sm btn-primary" id="boardMoreButton" @click="morePost"><span
           class="material-symbols-outlined">more_horiz</span>
       </button>
@@ -87,8 +88,6 @@ img {
   width: 50px;
   height: 35px;
   border-radius: 10px;
-  background-color: #1E1F22;
-  --bs-btn-border-color: #1E1F22;
 }
 
 
