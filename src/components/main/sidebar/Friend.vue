@@ -2,17 +2,18 @@
 import {defineProps} from 'vue'
 import RestApi from "@/script/axios/jwt/RestApi";
 import {useRouter} from "vue-router";
+import {useFriendStore} from "@/script/store/friend";
 
 const propsFriend = defineProps({
   friendInfo: Object,
 })
 const router = useRouter();
+const friendStore = useFriendStore();
 function openFriend() {
-  RestApi.post(`/friend/${propsFriend.friendInfo.id}`, {}).then(({data}) => {
-    // friendStore.user.id = data
-    // friendStore.updateFriendInfo()
-    console.log(data)
-    router.push(`/channel/friend/${propsFriend.friendInfo.id}`)
+  RestApi.post(`/friend/${propsFriend.friendInfo.user_id}`, {}).then(({data}) => {
+     friendStore.user.id = data
+     friendStore.updateFriendInfo()
+    router.push(`/channel/friend/${propsFriend.friendInfo.user_id}`)
   })
 }
 </script>

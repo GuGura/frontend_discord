@@ -12,6 +12,7 @@ import Lobby from "@/components/main/lobby/Lobby.vue";
 
 import Channel from "@/components/main/channel/Channel.vue";
 import PublicPage from "@/components/main/public/PublicPage.vue";
+import FriendLobby from "@/components/main/lobby/friend/FriendLobby.vue";
 
 const modalStore = useModalStore();
 const channelListStore = useChannelListStore();
@@ -38,6 +39,9 @@ onMounted(async () => {
     <div id="contents" v-if="route.currentRoute.value.path === '/channel/lobby'">
       <Lobby/>
     </div>
+      <div id="contents" v-else-if="route.currentRoute.value.path.slice(0,16) === '/channel/friend/'">
+          <FriendLobby/>
+      </div>
     <div id="contents" v-else-if="route.currentRoute.value.path === '/channel/public'">
       <PublicPage/>
     </div>

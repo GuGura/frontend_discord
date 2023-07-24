@@ -40,22 +40,17 @@ export const useFriendStore = defineStore("friendStore", () => {
         localStorage.removeItem('friend')
         RestApi.post('/myInfo/friend',{friendId:user.id})
             .then(({data}) => {
-                const userInfo = data.result
-                user.id = userInfo.id
-                user.email = userInfo.email
-                user.username = userInfo.username
+                const userInfo = data
+                user.username = userInfo.nickname
                 user.role = userInfo.role
                 user.join_date = userInfo.join_date
-                if(userInfo.user_icon_url?.trim()){
-                    user.user_icon_url = "data:image/png;base64,"+userInfo.user_icon_url
+                if(userInfo.icon_url?.trim()){
+                    user.user_icon_url = userInfo.icon_url
                 }else {
-                    user.user_icon_url = "data:image/png;base64,null"
+                    user.user_icon_url = ""
                 }
-                if(userInfo.user_description?.trim()){
-                    user.user_description = userInfo.user_description
-                }else {
-                    user.user_description = "환영합니다. 나만의 메신저를 꾸며보세요!"
-                }
+                user.user_description = userInfo.description
+
                 localStorage.setItem('friend',JSON.stringify(user))
             })
     }
